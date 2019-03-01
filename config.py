@@ -18,6 +18,8 @@ class Test(BaseConfig):
     user = 'root'
     password = '123456'
     charset = 'utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:123456@localhost:3306/flask'
+    SECRET_KEY = 'How do you turn this on'
 
 
 class Product(BaseConfig):

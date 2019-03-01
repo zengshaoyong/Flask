@@ -1,6 +1,5 @@
 from app.models.db import Userinfo
 from app import db
-from sqlalchemy import or_
 from werkzeug.security import check_password_hash
 
 test = Userinfo.query.filter(Userinfo.username == 'test').first()

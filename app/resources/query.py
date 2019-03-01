@@ -4,7 +4,6 @@ from flask_login import login_required
 from DBUtils.PooledDB import PooledDB
 from flask_restful import Resource, reqparse, fields, marshal_with
 from app.common.format import Format
-from flask import make_response, jsonify
 
 resource_fields = {
     'Id': fields.String,

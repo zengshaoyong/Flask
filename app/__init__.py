@@ -7,19 +7,19 @@ from flask_restful import Api
 from app.common.errors import errors
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
+from config import configs, APP_ENV
 
 login_manager = LoginManager()
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 app = Flask(__name__)
 api = Api(app, errors=errors)
-app.config['SECRET_KEY'] = 'how do you turn this on'
+app.config['SECRET_KEY'] = configs[APP_ENV].SECRET_KEY
 app.permanent_session_lifetime = timedelta(minutes=10)
 login_manager.init_app(app)
-login_manager.login_message = 'please login!'
 login_manager.session_protection = 'strong'
 cache.init_app(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:123456@localhost:3306/flask'
+app.config['SQLALCHEMY_DATABASE_URI'] = configs[APP_ENV].SQLALCHEMY_DATABASE_URI
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SQLALCHEMY_COMMIT_TEARDOWN = True
 db = SQLAlchemy(app)
