@@ -8,12 +8,14 @@ from app.common.errors import errors
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from config import configs, APP_ENV
+from flask_cors import CORS
 
 login_manager = LoginManager()
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 app = Flask(__name__)
 api = Api(app, errors=errors)
+CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = configs[APP_ENV].SECRET_KEY
 app.permanent_session_lifetime = timedelta(minutes=10)
 login_manager.init_app(app)
