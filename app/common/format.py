@@ -3,14 +3,47 @@ from flask import jsonify
 
 def Success(data):
     return jsonify({
-        "status": 200,
-        "data": data,
-        "message": 'SUCCESS'
+        "CODE": 200,
+        "RESULT": Format(data),
+        "MESSAGE": 'SUCCESS'
     })
+
 
 def Failed(data):
     return jsonify({
-        "status": 200,
-        "data": data,
-        "message": 'FAILED'
+        "CODE": 404,
+        "ERROR": data,
+        "MESSAGE": 'FAILED'
     })
+
+
+def Format(data):
+    results = {}
+    DATA = []
+    if typeof(data) == 'dict':
+        for k, v in data.items():
+            result = {}
+            result[k] = v
+            DATA.append(result)
+        results["PROP"] = ""
+        results["DATA"] = DATA
+        return results
+
+
+def typeof(variate):
+    type = None
+    if isinstance(variate, int):
+        type = "int"
+    elif isinstance(variate, str):
+        type = "str"
+    elif isinstance(variate, float):
+        type = "float"
+    elif isinstance(variate, list):
+        type = "list"
+    elif isinstance(variate, tuple):
+        type = "tuple"
+    elif isinstance(variate, dict):
+        type = "dict"
+    elif isinstance(variate, set):
+        type = "set"
+    return type
