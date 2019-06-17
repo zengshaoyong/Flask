@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from werkzeug.datastructures import FileStorage
-from app.common.format import Format
+from app.common.format import Success, Failed
 import os
 
 ALLOWED_EXTENSIONS = set(['war', 'jar'])
@@ -22,5 +22,5 @@ class Upload(Resource):
         if file and allowed_file(file.filename):
             # print(file.filename)
             file.save(os.path.join('D:/uploads', file.filename))
-            return Format('上传成功')
-        return Format('请选择正确的文件')
+            return Success('上传成功')
+        return Failed('请选择正确的文件')

@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user
 from flask_restful import Resource, reqparse
 from flask_login import login_required
 from flask import session, flash
-from app.common.format import Format
+from app.common.format import Success, Failed
 from app.models.db import Userinfo
 
 
@@ -24,7 +24,7 @@ def load_user(username):
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
-    return Format('请登陆')
+    return Failed('请登陆')
 
 
 class Login(Resource):
@@ -45,11 +45,11 @@ class Login(Resource):
                 curr_user.id = username
                 login_user(curr_user)
                 session.permanent = True
-                return Format('login successfully')
+                return Success('login successfully')
                 flash('login successfully')
-            return Format('Wrong password')
+            return Failed('Wrong password')
             flash('Wrong password')
-        return Format('Wrong username')
+        return Failed('Wrong username')
         flash('Wrong username')
 
 
@@ -58,4 +58,4 @@ class Logout(Resource):
 
     def get(self):
         logout_user()
-        return Format('logout successfully')
+        return Success('logout successfully')
