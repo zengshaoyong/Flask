@@ -3,13 +3,14 @@ from app import login_manager
 from flask_login import login_user, logout_user
 from flask_restful import Resource, reqparse
 from flask_login import login_required
-from flask import session
+from flask import session, flash
 from app.common.format import Format
 from app.models.db import Userinfo
 
 
 def query_user(username):
     user = Userinfo.query.filter(Userinfo.username == username).first()
+    print(user)
     return user
 
 
@@ -35,6 +36,7 @@ class Login(Resource):
     def get(self):
         args = self.parser.parse_args()
         username = args['username']
+        print(username)
         user = query_user(username)
         # 验证表单中提交的用户名和密码
         if user is not None:
@@ -44,8 +46,11 @@ class Login(Resource):
                 login_user(curr_user)
                 session.permanent = True
                 return Format('login successfully')
+                flash('login successfully')
             return Format('Wrong password')
+            flash('Wrong password')
         return Format('Wrong username')
+        flash('Wrong username')
 
 
 class Logout(Resource):

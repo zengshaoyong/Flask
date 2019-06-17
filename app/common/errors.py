@@ -13,9 +13,9 @@ errors = {
         'status': 429,
         # 'extra': "Any extra information you want.",
     },
-    'BadRequest': {
-        'message': "请输入正确的用户名和密码.",
-        'status': 400,
-        # 'extra': "Any extra information you want.",
-    },
+    # 'BadRequest': {
+    #     'message': "请输入正确的用户名和密码.",
+    #     'status': 400,
+    #     # 'extra': "Any extra information you want.",
+    # },
 }

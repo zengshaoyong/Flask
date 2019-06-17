@@ -15,3 +15,34 @@ class Userinfo(db.Model):
     # 定义一个验证密码的方法
     def check_password(self, pwd):
         return check_password_hash(self.password, pwd)
+
+
+class Ipaddrs(db.Model):
+    __tablename__ = 'ipaddrs'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    ips = db.Column(db.String(255), nullable=False)
+
+    def __init__(self, name, ips):
+        self.name = name
+        self.ips = ips
+
+    def __repr__(self):
+        return '<name %r>' % self.name
+
+    def query_ips(self):
+        return self.ips
+
+    @staticmethod
+    def add_app(name, ips):
+        new = Ipaddrs(name=name, ips=ips)
+        db.session.add(new)
+        db.session.commit()
+
+    def delete_app(self, name):
+        db.session.delete(name)
+        db.session.commit()
+
+    def update_app(self, ips):
+        self.ips = ips
+        db.session.commit()

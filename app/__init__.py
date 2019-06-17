@@ -1,4 +1,5 @@
 from flask import Flask
+import flask_restful
 from flask_login import LoginManager
 from flask_cache import Cache
 from flask_limiter import Limiter
@@ -9,6 +10,7 @@ from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from config import configs, APP_ENV
 from flask_cors import CORS
+from app.common.abort import my_abort
 
 login_manager = LoginManager()
 cache = Cache(config={'CACHE_TYPE': 'simple'})
@@ -25,6 +27,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = configs[APP_ENV].SQLALCHEMY_DATABASE_URI
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SQLALCHEMY_COMMIT_TEARDOWN = True
 db = SQLAlchemy(app)
+flask_restful.abort = my_abort
+
 
 limiter = Limiter(
     app,
