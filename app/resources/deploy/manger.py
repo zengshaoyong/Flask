@@ -27,13 +27,13 @@ class Manage(Resource):
         action = args['action']
         app = args['app']
         ips = args['ips']
-        result = query_app(app)
         results = {}
         if action == 'query_all':
             result = query_all()
             for i in result:
                 results[i.name] = i.ips.split(',')
             return Success(results)
+        result = query_app(app)
         if result is not None:
             if action == 'query':
                 results[result.name] = result.ips.split(',')

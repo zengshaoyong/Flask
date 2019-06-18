@@ -10,11 +10,13 @@ def Success(data):
 
 
 def Failed(data):
-    return jsonify({
-        "CODE": 404,
-        "ERROR": data,
-        "MESSAGE": 'FAILED'
-    })
+    if data:
+        return jsonify({
+            "CODE": 404,
+            "ERROR": data,
+            "MESSAGE": 'FAILED'
+        })
+    return
 
 
 def Format(data):
@@ -28,6 +30,7 @@ def Format(data):
         results["PROP"] = ""
         results["DATA"] = DATA
         return results
+    return
 
 
 def typeof(variate):
