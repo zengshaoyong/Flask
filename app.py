@@ -6,6 +6,7 @@ from app.common.auth import Login, Logout
 from app.resources.deploy.manger import Manage
 from app.resources.deploy.deployips import Deployips
 from app.resources.deploy.uploads import Upload
+from app.resources.deploy.deployed_ips import Deployed_ips
 
 monkey.patch_all()
 
@@ -16,6 +17,7 @@ api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(Manage, '/manage')
 api.add_resource(Deployips, '/deployips')
+api.add_resource(Deployed_ips, '/deployed_ips')
 api.add_resource(Upload, '/upload')
 
 if __name__ == '__main__':

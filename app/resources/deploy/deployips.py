@@ -9,11 +9,13 @@ class Deployips(Resource):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('action', type=str, required=True)
         self.parser.add_argument('app', type=str)
+        self.parser.add_argument('ips', type=str)
 
     def get(self):
         args = self.parser.parse_args()
         action = args['action']
         app = args['app']
+        ips = args['ips']
         # results = query_all()
         if action == 'all':
             result = query_all()
@@ -28,11 +30,22 @@ class Deployips(Resource):
             return Success('初始化所有应用成功')
         result = query_app(app)
         if action == 'one' and result is not None:
-            filename = 'D:\%s' % result.name
-            with open(filename, 'w') as f:
-                f.write('[%s]\n' % result.name)
-                results = result.ips.split(',')
-                for i in results:
-                    f.write(i + ' ' + 'ansible_ssh_user=cssuser ansible_ssh_pass=Wandaph@9000' + '\n')
-            return Success('初始化应用：%s 成功' % result.name)
-
+            if ips:
+                ips = ips.split(',')
+                filename = 'D:\%s' % result.name
+                with open(filename, 'w') as f:
+                    f.write('[%s]\n' % result.name)
+                    results = result.ips.split(',')
+                    for i in ips:
+                        print(i)
+                        if i in results:
+                            f.write(i + ' ' + 'ansible_ssh_user=cssuser ansible_ssh_pass=Wandaph@9000' + '\n')
+                return Success('初始化应用：%s 成功' % result.name)
+            else:
+                filename = 'D:\%s' % result.name
+                with open(filename, 'w') as f:
+                    f.write('[%s]\n' % result.name)
+                    results = result.ips.split(',')
+                    for i in results:
+                        f.write(i + ' ' + 'ansible_ssh_user=cssuser ansible_ssh_pass=Wandaph@9000' + '\n')
+                return Success('初始化应用：%s 成功' % result.name)

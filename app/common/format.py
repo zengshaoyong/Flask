@@ -30,6 +30,10 @@ def Format(data):
         results["PROP"] = ""
         results["DATA"] = DATA
         return results
+    if typeof(data) == 'list':
+        results["PROP"] = ""
+        results["DATA"] = data
+        return results
     return
 
 
