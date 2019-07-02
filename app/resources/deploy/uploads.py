@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from werkzeug.datastructures import FileStorage
 from app.common.format import Success, Failed
+from app.resources.deploy.manger import query_app
 import os
 
 ALLOWED_EXTENSIONS = set(['war', 'jar'])
@@ -11,6 +12,10 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
+def check(filename):
+    return query_app(filename.rsplit('.', 1)[0])
+
+
 class Upload(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
@@ -19,7 +24,7 @@ class Upload(Resource):
     def post(self):
         args = self.parser.parse_args()
         file = args['file']
-        if file and allowed_file(file.filename):
+        if check(file.filename) and allowed_file(file.filename):
             # print(file.filename)
             file.save(os.path.join('D:/uploads', file.filename))
             return Success('上传成功')

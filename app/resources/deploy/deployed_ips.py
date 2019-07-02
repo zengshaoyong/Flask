@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from app.resources.deploy.manger import query_app, query_all
+from app.resources.deploy.manger import query_app
 from app.common.format import Success, Failed
 
 
