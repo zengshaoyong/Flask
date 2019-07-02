@@ -8,6 +8,7 @@ from app.resources.deploy.deployips import Deployips
 from app.resources.deploy.uploads import Upload
 from app.resources.deploy.deployed_ips import Deployed_ips
 from app.resources.deploy.checkfile import Checkfile
+from app.resources.deploy.cpfile import Cpfile
 
 monkey.patch_all()
 
@@ -20,7 +21,8 @@ api.add_resource(Manage, '/manage')
 api.add_resource(Deployips, '/deployips')
 api.add_resource(Deployed_ips, '/deployed_ips')
 api.add_resource(Upload, '/upload')
-api.add_resource(Checkfile,'/checkfile')
+api.add_resource(Checkfile, '/checkfile')
+api.add_resource(Cpfile, '/cp')
 
 if __name__ == '__main__':
     server.serve_forever()
