@@ -2,19 +2,29 @@ from flask_restful import Resource, reqparse
 from app.resources.deploy.manger import query_app
 from app.common.format import Success, Failed
 
+war = 'D:/autotest/ip_war/'
+jar = 'D:/autotest/ip_jar/'
 
+
+# 检索已写入ansible的IP地址
 class Deployed_ips(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('app', type=str, required=True)
+        self.parser.add_argument('section', type=str, required=True)
 
     def get(self):
         args = self.parser.parse_args()
         app = args['app']
+        section = args['section']
         ips = []
+        if section == 'war':
+            path = war
+        if section == jar:
+            path = jar
         result = query_app(app)
         if result:
-            filename = 'D:\%s' % app
+            filename = '%s%s' % (path, app)
             with open(filename) as file:
                 for line in file:
                     line = line.split(' ')
