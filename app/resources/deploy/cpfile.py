@@ -11,6 +11,7 @@ jardst = 'D:/autotest/jars/'
 jar = '.jar'
 
 
+# 把应用包从上传文件夹拷贝到发布文件夹中
 class Cpfile(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
