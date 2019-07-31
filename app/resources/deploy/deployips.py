@@ -1,10 +1,11 @@
 from flask_restful import Resource, reqparse
 from app.resources.deploy.manger import query_app, query_all
 from app.common.format import Success, Failed
+from config import configs, APP_ENV
 from flask import flash
 
-war = 'D:/autotest/ip_war/'
-jar = 'D:/autotest/ip_jar/'
+war = configs[APP_ENV].ip_war
+jar = configs[APP_ENV].ip_jar
 
 
 # 写入IP地址到 ansible

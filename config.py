@@ -20,6 +20,12 @@ class Test(BaseConfig):
     charset = 'utf8'
     SQLALCHEMY_DATABASE_URI = 'mysql://root:123456@localhost:3306/flask'
     SECRET_KEY = 'How do you turn this on'
+    warsrc = 'D:/autotest/upload_war/'
+    wardst = 'D:/autotest/wars/'
+    jarsrc = 'D:/autotest/upload_jar/'
+    jardst = 'D:/autotest/jars/'
+    ip_war = 'D:/autotest/ip_war/'
+    ip_jar = 'D:/autotest/ip_jar/'
 
 
 class Product(BaseConfig):

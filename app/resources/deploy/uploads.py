@@ -2,12 +2,13 @@ from flask_restful import Resource, reqparse
 from werkzeug.datastructures import FileStorage
 from app.common.format import Success, Failed
 from app.resources.deploy.manger import query_app
+from config import configs, APP_ENV
 import os
 
 ALLOWED_EXTENSIONS = set(['war', 'jar'])
 
-warsrc = 'D:/autotest/upload_war/'
-jarsrc = 'D:/autotest/upload_jar/'
+warsrc = configs[APP_ENV].warsrc
+jarsrc = configs[APP_ENV].jarsrc
 
 
 # 检查应用名字是否正确
