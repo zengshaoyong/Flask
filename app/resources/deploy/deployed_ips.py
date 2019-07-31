@@ -1,9 +1,10 @@
 from flask_restful import Resource, reqparse
 from app.resources.deploy.manger import query_app
 from app.common.format import Success, Failed
+from config import configs, APP_ENV
 
-war = 'D:/autotest/ip_war/'
-jar = 'D:/autotest/ip_jar/'
+war = configs[APP_ENV].ip_war
+jar = configs[APP_ENV].ip_jar
 
 
 # 检索已写入ansible的IP地址
