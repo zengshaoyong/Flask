@@ -1,11 +1,31 @@
 from flask_restful import Resource, reqparse
 from app.common.format import Success
 import os
+import time
 
 upload_war = 'D:/autotest/upload_war/'
 upload_jar = 'D:/autotest/upload_jar/'
 
 
+def formatSize(bytes):
+    try:
+        bytes = float(bytes)
+        kb = bytes / 1024
+    except:
+        print("传入的字节格式不对")
+        return "Error"
+
+    if kb >= 1024:
+        M = kb / 1024
+        if M >= 1024:
+            G = M / 1024
+            return "%fG" % (G)
+        else:
+            return "%fM" % (M)
+    else:
+        return "%fkb" % (kb)
+
+# 查询已上传应用的信息
 class Checkfile(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
@@ -28,7 +48,7 @@ class Checkfile(Resource):
             createtime = os.path.getctime(path + file)
             size = os.path.getsize(path + file)
             result['filename'] = file
-            result['createtime'] = createtime
-            result['size'] = size
+            result['createtime'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(createtime))
+            result['size'] = formatSize(size)
             results.append(result)
         return Success(results)
