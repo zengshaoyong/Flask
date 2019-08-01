@@ -34,6 +34,10 @@ def Format(data):
         results["PROP"] = ""
         results["DATA"] = data
         return results
+    if typeof(data) == 'str':
+        results["PROP"] = ""
+        results["DATA"] = data
+        return results
     return
 
 

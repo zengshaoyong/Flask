@@ -22,10 +22,12 @@ class Ipaddrs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     ips = db.Column(db.String(255), nullable=False)
+    type = db.Column(db.String(80), nullable=False)
 
     def __init__(self, name, ips):
         self.name = name
         self.ips = ips
+        self.type = type
 
     def __repr__(self):
         return '<name %r>' % self.name
@@ -33,9 +35,12 @@ class Ipaddrs(db.Model):
     def query_ips(self):
         return self.ips
 
+    def query_type(self):
+        return self.type
+
     @staticmethod
     def add_app(name, ips):
-        new = Ipaddrs(name=name, ips=ips)
+        new = Ipaddrs(name=name, ips=ips, type=type)
         db.session.add(new)
         db.session.commit()
 
@@ -46,3 +51,6 @@ class Ipaddrs(db.Model):
     def update_app(self, ips):
         self.ips = ips
         db.session.commit()
+
+
+# db.create_all()

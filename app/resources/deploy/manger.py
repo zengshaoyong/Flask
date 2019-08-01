@@ -21,12 +21,14 @@ class Manage(Resource):
         self.parser.add_argument('action', type=str, required=True)
         self.parser.add_argument('app', type=str)
         self.parser.add_argument('ips', type=str)
+        self.parser.add_argument('type', type=str)
 
     def get(self):
         args = self.parser.parse_args()
         action = args['action']
         app = args['app']
         ips = args['ips']
+        type = args['type']
         results = {}
         if action == 'query_all':
             result = query_all()
@@ -42,7 +44,7 @@ class Manage(Resource):
                 result.delete_app(result)
                 return Success('delete successfully')
             if action == 'add' and ips is not None:
-                Ipaddrs.add_app(app, ips)
+                Ipaddrs.add_app(app, ips, type)
                 return Success('add successfully')
             if action == 'update' and ips is not None:
                 result.update_app(ips)

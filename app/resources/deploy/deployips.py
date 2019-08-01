@@ -15,6 +15,7 @@ class Deployips(Resource):
         self.parser.add_argument('action', type=str, required=True)
         self.parser.add_argument('section', type=str, required=True)
         self.parser.add_argument('app', type=str)
+        # 单独部署某些IP时用
         self.parser.add_argument('ips', type=str)
 
     def get(self):
@@ -25,20 +26,25 @@ class Deployips(Resource):
         ips = args['ips']
         if section == 'war':
             path = war
-        if section == jar:
+            type = 'war'
+        if section == 'jar':
             path = jar
+            type = 'jar'
         # results = query_all()
         if action == 'all':
             result = query_all()
             for i in result:
-                filename = path + '%s' % i.name
-                with open(filename, 'w') as f:
-                    f.write('[%s]\n' % i.name)
-                    results = i.ips.split(',')
-                    for j in results:
-                        f.write(j + ' ' + 'ansible_ssh_user=cssuser ansible_ssh_pass=Wandaph@9000' + '\n')
-                        flash('初始化应用：%s成功' % i.name)
+                # print(i.type)
+                if i.type == type:
+                    filename = path + '%s' % i.name
+                    with open(filename, 'w') as f:
+                        f.write('[%s]\n' % i.name)
+                        results = i.ips.split(',')
+                        for j in results:
+                            f.write(j + ' ' + 'ansible_ssh_user=cssuser ansible_ssh_pass=Wandaph@9000' + '\n')
+                            flash('初始化应用：%s成功' % i.name)
             return Success('初始化所有应用成功')
+
         result = query_app(app)
         if action == 'one' and result is not None:
             if ips:
@@ -48,7 +54,7 @@ class Deployips(Resource):
                     f.write('[%s]\n' % result.name)
                     results = result.ips.split(',')
                     for i in ips:
-                        print(i)
+                        # print(i)
                         if i in results:
                             f.write(i + ' ' + 'ansible_ssh_user=cssuser ansible_ssh_pass=Wandaph@9000' + '\n')
                 return Success('初始化应用：%s 成功' % result.name)
