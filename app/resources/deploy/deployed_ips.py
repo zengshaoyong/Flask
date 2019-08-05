@@ -21,7 +21,7 @@ class Deployed_ips(Resource):
         ips = []
         if section == 'war':
             path = war
-        if section == jar:
+        if section == 'jar':
             path = jar
         result = query_app(app)
         if result:
