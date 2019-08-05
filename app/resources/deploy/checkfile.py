@@ -40,10 +40,10 @@ class Checkfile(Resource):
         if section == 'jar':
             path = upload_jar
         dirs = os.listdir(path)
-        result = {}
         results = []
         for file in dirs:
             # print(file)
+            result = {}
             # print(os.path.getctime(path + '/' + file))
             # print(os.path.getsize(path + '/' + file))
             createtime = os.path.getctime(path + file)
@@ -52,4 +52,5 @@ class Checkfile(Resource):
             result['createtime'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(createtime))
             result['size'] = formatSize(size)
             results.append(result)
+            # print(results)
         return Success(results)

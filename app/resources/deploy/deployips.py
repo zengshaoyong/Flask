@@ -12,7 +12,7 @@ jar = configs[APP_ENV].ip_jar
 class Deployips(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
-        self.parser.add_argument('action', type=str, required=True)
+        self.parser.add_argument('action', type=str)
         self.parser.add_argument('section', type=str, required=True)
         self.parser.add_argument('app', type=str)
         # 单独部署某些IP时用
@@ -24,6 +24,7 @@ class Deployips(Resource):
         section = args['section']
         app = args['app']
         ips = args['ips']
+        # print(action)
         if section == 'war':
             path = war
             type = 'war'
@@ -46,7 +47,8 @@ class Deployips(Resource):
             return Success('初始化所有应用成功')
 
         result = query_app(app)
-        if action == 'one' and result is not None:
+        # print(result)
+        if action == None and result is not None:
             if ips:
                 ips = ips.split(',')
                 filename = path + '%s' % result.name

@@ -33,5 +33,5 @@ flask_restful.abort = my_abort
 limiter = Limiter(
     app,
     key_func=get_remote_address,
-    default_limits=["100 per minute", "2 per second"],
+    default_limits=["300 per minute", "10 per second"],
 )
