@@ -14,10 +14,15 @@ from werkzeug.security import check_password_hash
 # print(check_password_hash(test.password, '123456789'))
 
 
-test = Ipaddrs(name='wandaph-tmk-deploy-pro', ips='10.161.108.211,10.161.108.212')
-db.session.add(test)
-db.session.commit()
+# test = Ipaddrs(name='wandaph-tmk-deploy-pro', ips='10.161.108.211,10.161.108.212')
+# db.session.add(test)
+# db.session.commit()
 
+
+from app.models.db import Ipaddrs
+
+app = Ipaddrs.query.filter(Ipaddrs.name == 'acct-pro').first()
+print(app.type)
 
 
 

@@ -87,9 +87,9 @@ for i in issues_in_proj:
             if content == None:
                 content = '请查看附件'
             email = user.emailAddress
-            print(user)
-            print(user.emailAddress)
-            print(issue)
-            print(content)
+            # print(user)
+            print(email)
+            # print(issue)
+            # print(content)
 # Email(email, subject, content)
 # Smtp(email, subject, content)
