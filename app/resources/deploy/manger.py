@@ -30,11 +30,18 @@ class Manage(Resource):
         ips = args['ips']
         type = args['type']
         results = {}
+        res_arr = []
         if action == 'query_all':
             result = query_all()
             for i in result:
                 results[i.name] = i.ips.split(',')
             return Success(results)
+        if action == 'query_name':
+            result = query_all()
+            for i in result:
+                if i.type == type:
+                    res_arr.append(i.name)
+            return Success(res_arr)
         result = query_app(app)
         if result is not None:
             if action == 'query':

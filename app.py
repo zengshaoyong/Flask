@@ -11,6 +11,7 @@ from app.resources.deploy.checkfile import Checkfile
 from app.resources.deploy.cpfile import Cpfile
 from app.resources.deploy.rmfile import Rmfile
 from app.resources.deploy.appips import App_ips
+from app.resources.deploy.touchfile import Touchfile
 
 monkey.patch_all()
 
@@ -27,6 +28,7 @@ api.add_resource(Checkfile, '/checkfile')
 api.add_resource(Cpfile, '/cp')
 api.add_resource(Rmfile, '/rm')
 api.add_resource(App_ips, '/app_ips')
+api.add_resource(Touchfile, '/touch')
 
 if __name__ == '__main__':
     server.serve_forever()

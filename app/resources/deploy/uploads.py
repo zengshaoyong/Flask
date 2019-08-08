@@ -30,13 +30,15 @@ class Upload(Resource):
     def post(self):
         args = self.parser.parse_args()
         file = args['file']
-        if check(file.filename) and allowed_file(file.filename):
-            # print(file.filename)
-            tmp = file.filename.rsplit('.', 1)[1]
-            if tmp == 'war':
-                path = warsrc
-            if tmp == 'jar':
-                path = jarsrc
-            file.save(os.path.join(path, file.filename))
-            return Success('上传成功')
-        return Failed('请选择正确的文件')
+        if allowed_file(file.filename):
+            if check(file.filename):
+                # print(file.filename)
+                tmp = file.filename.rsplit('.', 1)[1]
+                if tmp == 'war':
+                    path = warsrc
+                if tmp == 'jar':
+                    path = jarsrc
+                file.save(os.path.join(path, file.filename))
+                return Success('上传成功')
+            return Failed('应用未入库，请确认')
+        return Failed('只能上传WAR包和JAR包')

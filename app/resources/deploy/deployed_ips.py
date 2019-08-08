@@ -2,6 +2,7 @@ from flask_restful import Resource, reqparse
 from app.resources.deploy.manger import query_app
 from app.common.format import Success, Failed
 from config import configs, APP_ENV
+import os
 
 war = configs[APP_ENV].ip_war
 jar = configs[APP_ENV].ip_jar
@@ -26,11 +27,14 @@ class Deployed_ips(Resource):
         result = query_app(app)
         if result:
             filename = '%s%s' % (path, app)
-            with open(filename) as file:
-                for line in file:
-                    line = line.split(' ')
-                    if (line.__len__() == 3):
-                        ips.append(line[0])
-                return Success(ips)
+            if os.path.exists(filename):
+                with open(filename) as file:
+                    for line in file:
+                        line = line.split(' ')
+                        if (line.__len__() == 3):
+                            ips.append(line[0])
+                    return Success(ips)
+            else:
+                return Success('')
         else:
             return Failed('请输入正确的应用名')

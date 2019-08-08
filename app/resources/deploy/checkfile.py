@@ -46,7 +46,7 @@ class Checkfile(Resource):
             result = {}
             # print(os.path.getctime(path + '/' + file))
             # print(os.path.getsize(path + '/' + file))
-            createtime = os.path.getctime(path + file)
+            createtime = os.path.getmtime(path + file)
             size = os.path.getsize(path + file)
             result['filename'] = file
             result['createtime'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(createtime))
