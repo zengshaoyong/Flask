@@ -5,7 +5,7 @@ from flask_restful import Resource, reqparse
 from flask_login import login_required
 from flask import session
 from app.common.format import Success, Failed
-from app.common.abort import generate_response
+from app.common.abort import generate_response, login_response
 from app.models.db import Userinfo
 
 
@@ -25,7 +25,7 @@ def load_user(username):
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
-    return Failed('请登陆')
+    return generate_response('请登陆')
 
 
 class Login(Resource):
@@ -46,9 +46,10 @@ class Login(Resource):
                 curr_user.id = username
                 login_user(curr_user)
                 session.permanent = True
-                return generate_response('login successfully')
-            return generate_response('Wrong password')
-        return generate_response('Wrong username')
+                # return generate_response('login successfully')
+                return login_response(status='ok', currentAuthority=user['currentAuthority'])
+            return login_response(message='密码错误')
+        return login_response(message='用户名不存在')
 
 
 class Logout(Resource):
@@ -56,4 +57,4 @@ class Logout(Resource):
 
     def get(self):
         logout_user()
-        return Success('logout successfully')
+        return generate_response('logout successfully')
