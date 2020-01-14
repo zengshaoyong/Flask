@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a48c937e-f66f-41ba-9de2-480a2352ea53" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Python.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Python.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/common/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/common/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/datasearch/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/datasearch/query.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +57,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../flask" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -168,7 +166,7 @@
       <workItem from="1578965306275" duration="50000" />
       <workItem from="1578965363814" duration="53000" />
       <workItem from="1578965424193" duration="640000" />
-      <workItem from="1578966769478" duration="388000" />
+      <workItem from="1578966769478" duration="708000" />
     </task>
     <task id="LOCAL-00001" summary="增加war包与jar包的区分">
       <created>1564475285542</created>
@@ -247,26 +245,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="455" y="215" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1578967125270" />
-    <state x="922" y="264" key="FileChooserDialogImpl" timestamp="1578967069606">
+    <state x="922" y="264" key="FileChooserDialogImpl" timestamp="1578967323038">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="922" y="264" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1578967069606" />
-    <state width="1876" height="277" key="GridCell.Tab.0.bottom" timestamp="1578967160645">
+    <state x="922" y="264" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1578967323038" />
+    <state width="938" height="277" key="GridCell.Tab.0.bottom" timestamp="1578967502176">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1578967160645" />
-    <state width="1876" height="277" key="GridCell.Tab.0.center" timestamp="1578967160645">
+    <state width="938" height="277" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1578967502176" />
+    <state width="938" height="277" key="GridCell.Tab.0.center" timestamp="1578967502175">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1578967160645" />
-    <state width="1876" height="277" key="GridCell.Tab.0.left" timestamp="1578967160645">
+    <state width="938" height="277" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1578967502175" />
+    <state width="938" height="277" key="GridCell.Tab.0.left" timestamp="1578967502175">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1578967160645" />
-    <state width="1876" height="277" key="GridCell.Tab.0.right" timestamp="1578967160645">
+    <state width="938" height="277" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1578967502175" />
+    <state width="938" height="277" key="GridCell.Tab.0.right" timestamp="1578967502176">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1876" height="277" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1578967160645" />
+    <state width="938" height="277" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1578967502176" />
     <state x="569" y="155" key="SettingsEditor" timestamp="1578967158837">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

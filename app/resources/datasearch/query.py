@@ -3,7 +3,7 @@ from config import APP_ENV, configs
 from flask_login import login_required
 from DBUtils.PooledDB import PooledDB
 from flask_restful import Resource, reqparse, fields, marshal_with
-from app.common.format import Success, Failed
+from app.common.abort import generate_response
 
 resource_fields = {
     'Id': fields.String,
@@ -56,4 +56,4 @@ class Mysql(Resource):
             result.append(row)
         # print(data)
         # print(index)
-        return Success(result)
+        return generate_response(result)

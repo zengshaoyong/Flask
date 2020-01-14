@@ -3,8 +3,9 @@ from app import login_manager
 from flask_login import login_user, logout_user
 from flask_restful import Resource, reqparse
 from flask_login import login_required
-from flask import session, flash
+from flask import session
 from app.common.format import Success, Failed
+from app.common.abort import generate_response
 from app.models.db import Userinfo
 
 
@@ -45,12 +46,9 @@ class Login(Resource):
                 curr_user.id = username
                 login_user(curr_user)
                 session.permanent = True
-                return Success('login successfully')
-                flash('login successfully')
-            return Failed('Wrong password')
-            flash('Wrong password')
-        return Failed('Wrong username')
-        flash('Wrong username')
+                return generate_response('login successfully')
+            return generate_response('Wrong password')
+        return generate_response('Wrong username')
 
 
 class Logout(Resource):
