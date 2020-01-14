@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a48c937e-f66f-41ba-9de2-480a2352ea53" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/resources/kubernetes/Upload.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/resources/kubernetes/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/resources/kubernetes/kubernetes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ca.pem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/common/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/datasearch/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/datasearch/query.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/common/abort.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/common/abort.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +55,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1WKsBUmYa21NLwmwJXmHX8qPWTR" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -57,23 +66,25 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../flask" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/resources/kubernetes" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Python\resources" />
-      <recent name="D:\Python\app\resources" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Flask\app\resources\datasearch" />
       <recent name="D:\Flask\app\resources\deploy" />
       <recent name="D:\Python\app" />
       <recent name="D:\Python\models" />
       <recent name="D:\Python" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\CMDB\flask-restful\app\resources\kubernetes" />
+      <recent name="F:\CMDB\flask-restful" />
+      <recent name="D:\Python\resources" />
+      <recent name="D:\Python\app\resources" />
     </key>
   </component>
   <component name="RunManager">
@@ -166,7 +177,7 @@
       <workItem from="1578965306275" duration="50000" />
       <workItem from="1578965363814" duration="53000" />
       <workItem from="1578965424193" duration="640000" />
-      <workItem from="1578966769478" duration="708000" />
+      <workItem from="1578966769478" duration="1667000" />
     </task>
     <task id="LOCAL-00001" summary="增加war包与jar包的区分">
       <created>1564475285542</created>
@@ -245,26 +256,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="455" y="215" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1578967125270" />
+    <state x="702" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1578968277901">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="702" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1578968277901" />
     <state x="922" y="264" key="FileChooserDialogImpl" timestamp="1578967323038">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="922" y="264" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1578967323038" />
-    <state width="938" height="277" key="GridCell.Tab.0.bottom" timestamp="1578967502176">
+    <state width="1876" height="277" key="GridCell.Tab.0.bottom" timestamp="1578968441520">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="277" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1578967502176" />
-    <state width="938" height="277" key="GridCell.Tab.0.center" timestamp="1578967502175">
+    <state width="1876" height="277" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1578968441520" />
+    <state width="1876" height="277" key="GridCell.Tab.0.center" timestamp="1578968441520">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="277" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1578967502175" />
-    <state width="938" height="277" key="GridCell.Tab.0.left" timestamp="1578967502175">
+    <state width="1876" height="277" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1578968441520" />
+    <state width="1876" height="277" key="GridCell.Tab.0.left" timestamp="1578968441520">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="277" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1578967502175" />
-    <state width="938" height="277" key="GridCell.Tab.0.right" timestamp="1578967502176">
+    <state width="1876" height="277" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1578968441520" />
+    <state width="1876" height="277" key="GridCell.Tab.0.right" timestamp="1578968441520">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="277" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1578967502176" />
+    <state width="1876" height="277" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1578968441520" />
     <state x="569" y="155" key="SettingsEditor" timestamp="1578967158837">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -275,7 +290,7 @@
     <state x="645" y="342" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1578966771226" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/flask_restful$app.coverage" NAME="app Coverage Results" MODIFIED="1578967160638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/flask_restful$app.coverage" NAME="app Coverage Results" MODIFIED="1578968441509" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="masterDetails">
     <states>

@@ -15,6 +15,14 @@ def generate_response(data=None, message=ResponseCode.MESSAGE, status=ResponseCo
     }
 
 
+def login_response(status='error', currentAuthority='guest', message=ResponseCode.MESSAGE):
+    return {
+        'status': status,
+        'currentAuthority': currentAuthority,
+        'message': message,
+    }
+
+
 def my_abort(http_status_code, *args, **kwargs):
     if http_status_code == 400:
         # 重定义400返回参数
