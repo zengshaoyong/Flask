@@ -12,7 +12,7 @@ file_dir = os.path.join(basedir, 'upload')
 
 
 class Kubernetes(Resource):
-    # decorators = [login_required]
+    decorators = [login_required]
 
     def __init__(self):
         self.Token = configs[APP_ENV].kubernetes_Token
