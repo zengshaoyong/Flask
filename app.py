@@ -1,6 +1,6 @@
+from gevent import monkey
 from app.resources.datasearch.query import *
 from app import app, api
-from gevent import monkey
 from gevent.pywsgi import WSGIServer
 from app.common.auth import Login, Logout
 from app.resources.kubernetes.kubernetes import Kubernetes

@@ -34,12 +34,12 @@ class Kubernetes(Resource):
         self.parser.add_argument('image', type=str, location='args')
         self.parser.add_argument('yaml', type=str, location='args')
         self.args = self.parser.parse_args()
-        self.namespace = query_user(current_user.id).namespace
 
     def get(self):
         core = client.CoreV1Api()
         apps = client.AppsV1Api()
         extension = client.NetworkingV1beta1Api()
+        namespace = query_user(current_user.id).namespace
         task = self.args['task']
         name = self.args['name']
         yaml_file = self.args['yaml']
@@ -53,7 +53,7 @@ class Kubernetes(Resource):
                     res.append(i.metadata.name)
                 return generate_response(res)
         elif task == 'getpod':
-            ret = core.list_namespaced_pod(namespace=self.namespace)
+            ret = core.list_namespaced_pod(namespace=namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -73,7 +73,7 @@ class Kubernetes(Resource):
                     n = n + 1
                 return generate_response(res)
         elif task == 'getsvc':
-            ret = core.list_namespaced_service(namespace=self.namespace)
+            ret = core.list_namespaced_service(namespace=namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -89,7 +89,7 @@ class Kubernetes(Resource):
                     n = n + 1
                 return generate_response(res)
         elif task == 'getpvc':
-            ret = core.list_namespaced_persistent_volume_claim(namespace=self.namespace)
+            ret = core.list_namespaced_persistent_volume_claim(namespace=namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -106,7 +106,7 @@ class Kubernetes(Resource):
                     n = n + 1
                 return generate_response(res)
         elif task == 'getdm':
-            ret = apps.list_namespaced_deployment(namespace=self.namespace)
+            ret = apps.list_namespaced_deployment(namespace=namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -123,7 +123,7 @@ class Kubernetes(Resource):
                     n = n + 1
             return generate_response(res)
         elif task == 'geting':
-            ret = extension.list_namespaced_ingress(namespace=self.namespace)
+            ret = extension.list_namespaced_ingress(namespace=namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -141,13 +141,13 @@ class Kubernetes(Resource):
             return generate_response(res)
         elif task == 'deletepod':
             try:
-                core.delete_namespaced_pod(name=name, namespace=self.namespace)
+                core.delete_namespaced_pod(name=name, namespace=namespace)
                 return generate_response('删除成功')
             except ApiException as e:
                 return generate_response("Exception when calling CoreV1Api->delete_namespaced_pod: %s\n" % e.reason)
         elif task == 'deletedm':
             try:
-                apps.delete_namespaced_deployment(name=name, namespace=self.namespace)
+                apps.delete_namespaced_deployment(name=name, namespace=namespace)
                 return generate_response('删除成功')
             except ApiException as e:
                 return generate_response(
@@ -157,7 +157,7 @@ class Kubernetes(Resource):
                     'spec': {'template': {'spec': {'containers': [{'image': image, 'name': container_name, }]}, }, },
                     'apiVersion': 'apps/v1', 'metadata': {'name': name}}
             try:
-                apps.patch_namespaced_deployment(name=name, namespace=self.namespace, body=body)
+                apps.patch_namespaced_deployment(name=name, namespace=namespace, body=body)
                 return generate_response('修改成功')
             except ApiException as e:
                 return generate_response(
@@ -168,7 +168,7 @@ class Kubernetes(Resource):
                 body = yaml.safe_load(f.read())
             # print(body)
             try:
-                apps.create_namespaced_deployment(namespace=self.namespace, body=body)
+                apps.create_namespaced_deployment(namespace=namespace, body=body)
                 return generate_response('创建成功')
             except ApiException as e:
                 return generate_response(
