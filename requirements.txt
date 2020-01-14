@@ -16,3 +16,5 @@ flask_limiter
 flask_cors
 DBUtils
 werkzeug
+mysql-connector
+kubernetes
