@@ -4,6 +4,8 @@ from flask_restful import Resource, reqparse
 from app.common.abort import generate_response
 from flask_login import login_required
 from config import APP_ENV, configs
+from flask_login import current_user
+from app.common.auth import query_user
 import yaml
 import os
 
@@ -32,6 +34,7 @@ class Kubernetes(Resource):
         self.parser.add_argument('image', type=str, location='args')
         self.parser.add_argument('yaml', type=str, location='args')
         self.args = self.parser.parse_args()
+        self.namespace = query_user(current_user.id).namespace
 
     def get(self):
         core = client.CoreV1Api()
@@ -39,7 +42,6 @@ class Kubernetes(Resource):
         extension = client.NetworkingV1beta1Api()
         task = self.args['task']
         name = self.args['name']
-        ns_name = self.args['ns_name']
         yaml_file = self.args['yaml']
         container_name = self.args['container_name']
         image = self.args['image']
@@ -51,7 +53,7 @@ class Kubernetes(Resource):
                     res.append(i.metadata.name)
                 return generate_response(res)
         elif task == 'getpod':
-            ret = core.list_namespaced_pod(namespace='kube-system')
+            ret = core.list_namespaced_pod(namespace=self.namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -71,7 +73,7 @@ class Kubernetes(Resource):
                     n = n + 1
                 return generate_response(res)
         elif task == 'getsvc':
-            ret = core.list_namespaced_service(namespace='kube-system')
+            ret = core.list_namespaced_service(namespace=self.namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -87,7 +89,7 @@ class Kubernetes(Resource):
                     n = n + 1
                 return generate_response(res)
         elif task == 'getpvc':
-            ret = core.list_namespaced_persistent_volume_claim(namespace='kube-system')
+            ret = core.list_namespaced_persistent_volume_claim(namespace=self.namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -104,7 +106,7 @@ class Kubernetes(Resource):
                     n = n + 1
                 return generate_response(res)
         elif task == 'getdm':
-            ret = apps.list_namespaced_deployment(namespace='kube-system')
+            ret = apps.list_namespaced_deployment(namespace=self.namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -121,7 +123,7 @@ class Kubernetes(Resource):
                     n = n + 1
             return generate_response(res)
         elif task == 'geting':
-            ret = extension.list_namespaced_ingress(namespace='kube-system')
+            ret = extension.list_namespaced_ingress(namespace=self.namespace)
             res = []
             n = 1
             if ret.items != '':
@@ -139,13 +141,13 @@ class Kubernetes(Resource):
             return generate_response(res)
         elif task == 'deletepod':
             try:
-                core.delete_namespaced_pod(name=name, namespace=ns_name)
+                core.delete_namespaced_pod(name=name, namespace=self.namespace)
                 return generate_response('删除成功')
             except ApiException as e:
                 return generate_response("Exception when calling CoreV1Api->delete_namespaced_pod: %s\n" % e.reason)
         elif task == 'deletedm':
             try:
-                apps.delete_namespaced_deployment(name=name, namespace=ns_name)
+                apps.delete_namespaced_deployment(name=name, namespace=self.namespace)
                 return generate_response('删除成功')
             except ApiException as e:
                 return generate_response(
@@ -155,7 +157,7 @@ class Kubernetes(Resource):
                     'spec': {'template': {'spec': {'containers': [{'image': image, 'name': container_name, }]}, }, },
                     'apiVersion': 'apps/v1', 'metadata': {'name': name}}
             try:
-                apps.patch_namespaced_deployment(name=name, namespace=ns_name, body=body)
+                apps.patch_namespaced_deployment(name=name, namespace=self.namespace, body=body)
                 return generate_response('修改成功')
             except ApiException as e:
                 return generate_response(
@@ -166,7 +168,7 @@ class Kubernetes(Resource):
                 body = yaml.safe_load(f.read())
             # print(body)
             try:
-                apps.create_namespaced_deployment(namespace=ns_name, body=body)
+                apps.create_namespaced_deployment(namespace=self.namespace, body=body)
                 return generate_response('创建成功')
             except ApiException as e:
                 return generate_response(
