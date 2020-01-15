@@ -21,4 +21,16 @@ class Userinfo(db.Model):
         return check_password_hash(self.password, pwd)
 
 
+class LdapUser(db.Model):
+    __tablename__ = 'ldap_users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True)
+    currentAuthority = db.Column(db.String(255), nullable=False)
+    namespace = db.Column(db.String(255), nullable=False)
+
+    def __init__(self, username, currentAuthority, namespace):
+        self.username = username
+        self.currentAuthority = currentAuthority
+        self.namespace = namespace
+
 # db.create_all()

@@ -8,7 +8,7 @@ from app.resources.kubernetes.Upload import Upload
 
 # monkey.patch_all()
 
-server = WSGIServer(('0.0.0.0', 5000), app)
+# server = WSGIServer(('0.0.0.0', 5000), app)
 
 api.add_resource(Mysql, '/mysql')
 api.add_resource(Login, '/login')
@@ -17,4 +17,5 @@ api.add_resource(Kubernetes, '/k8s')
 api.add_resource(Upload, '/upload')
 
 if __name__ == '__main__':
-    server.serve_forever()
+    # server.serve_forever()
+    app.run(host='0.0.0.0')

@@ -15,7 +15,7 @@ def generate_response(data=None, message=ResponseCode.MESSAGE, status=ResponseCo
     }
 
 
-def login_response(status='error', currentAuthority='guest', message=ResponseCode.MESSAGE):
+def login_response(status='401', currentAuthority='guest', message=ResponseCode.MESSAGE):
     return {
         'status': status,
         'currentAuthority': currentAuthority,
