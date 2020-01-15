@@ -9,7 +9,7 @@ from app.common.abort import generate_response, login_response
 from app.models.db import Userinfo, LdapUser
 from app import db
 from app.common.format import typeof
-
+from app.common.menu import menu
 
 def query_user(username):
     user = Userinfo.query.filter(Userinfo.username == username).first()
@@ -63,6 +63,7 @@ class Login(Resource):
                     login_user(curr_user)
                     session.permanent = True
                     return login_response(status='ok', currentAuthority=user.currentAuthority)
+                    # return login_response(status='ok', menu=menu)
                 return login_response(message='密码错误')
             return login_response(message='用户不存在')
         elif login_type == 'ldap':
@@ -73,12 +74,13 @@ class Login(Resource):
                     new_user = LdapUser(username=username, currentAuthority='guest', namespace='default')
                     db.session.add(new_user)
                     db.session.commit()
-                user = query_ldap_user(username)
+                    user = query_ldap_user(username)
                 curr_user = User()
                 curr_user.id = username
                 login_user(curr_user)
                 session.permanent = True
                 return login_response(status='ok', currentAuthority=user.currentAuthority)
+                # return login_response(status='ok', menu=menu)
             return login_response(message='用户名或密码错误')
 
 

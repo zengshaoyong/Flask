@@ -22,6 +22,13 @@ def login_response(status='401', currentAuthority='guest', message=ResponseCode.
         'message': message,
     }
 
+# def login_response(status='401', menu=[], message=ResponseCode.MESSAGE):
+#     return {
+#         'status': status,
+#         'menu': menu,
+#         'message': message,
+#     }
+
 
 def my_abort(http_status_code, *args, **kwargs):
     if http_status_code == 400:
