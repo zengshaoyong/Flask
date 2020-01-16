@@ -15,19 +15,12 @@ def generate_response(data=None, message=ResponseCode.MESSAGE, status=ResponseCo
     }
 
 
-def login_response(status='401', currentAuthority='guest', message=ResponseCode.MESSAGE):
+def login_response(status='', currentAuthority='guest', message=ResponseCode.MESSAGE):
     return {
         'status': status,
         'currentAuthority': currentAuthority,
         'message': message,
     }
-
-# def login_response(status='401', menu=[], message=ResponseCode.MESSAGE):
-#     return {
-#         'status': status,
-#         'menu': menu,
-#         'message': message,
-#     }
 
 
 def my_abort(http_status_code, *args, **kwargs):

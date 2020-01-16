@@ -11,6 +11,7 @@ from app import db
 from app.common.format import typeof
 from app.common.menu import menu
 
+
 def query_user(username):
     user = Userinfo.query.filter(Userinfo.username == username).first()
     # print(user)
@@ -39,7 +40,7 @@ def load_user(username):
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
-    return generate_response('请登陆')
+    return login_response(status='401', message='请登陆')
 
 
 class Login(Resource):

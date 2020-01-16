@@ -14,8 +14,8 @@ errors = {
         # 'extra': "Any extra information you want.",
     },
     'UnAuthorized': {
-        'message': "TOO MANY REQUESTS.",
-        'status': 429,
+        'message': "请登陆",
+        'status': 401,
         # 'extra': "Any extra information you want.",
     },
     # 'BadRequest': {
