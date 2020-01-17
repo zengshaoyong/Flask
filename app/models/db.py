@@ -9,14 +9,17 @@ class Userinfo(db.Model):
     password = db.Column(db.String(255), nullable=False)
     currentAuthority = db.Column(db.String(255), nullable=False)
     namespace = db.Column(db.String(255), nullable=False)
+    group = db.Column(db.String(255), nullable=False)
 
-    def __init__(self, username, password, currentAuthority, namespace):
+    def __init__(self, username, password, currentAuthority, namespace, group):
         self.username = username
         self.password = generate_password_hash(password)
         self.currentAuthority = currentAuthority
         self.namespace = namespace
+        self.group = group
 
-    # 定义一个验证密码的方法
+        # 定义一个验证密码的方法
+
     def check_password(self, pwd):
         return check_password_hash(self.password, pwd)
 
@@ -27,10 +30,12 @@ class LdapUser(db.Model):
     username = db.Column(db.String(80), unique=True)
     currentAuthority = db.Column(db.String(255), nullable=False)
     namespace = db.Column(db.String(255), nullable=False)
+    group = db.Column(db.String(255), nullable=False)
 
-    def __init__(self, username, currentAuthority, namespace):
+    def __init__(self, username, currentAuthority, namespace, group):
         self.username = username
         self.currentAuthority = currentAuthority
         self.namespace = namespace
+        self.group = group
 
 # db.create_all()

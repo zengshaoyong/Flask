@@ -5,7 +5,7 @@ from app.common.abort import generate_response
 from flask_login import login_required
 from config import APP_ENV, configs
 from flask_login import current_user
-from app.common.auth import query_user
+from app.common.auth import query_user, query_ldap_user
 import yaml
 import os
 
@@ -39,7 +39,10 @@ class Kubernetes(Resource):
         core = client.CoreV1Api()
         apps = client.AppsV1Api()
         extension = client.NetworkingV1beta1Api()
-        namespace = query_user(current_user.id).namespace
+        if (current_user.type == 'account'):
+            namespace = query_user(current_user.id).namespace
+        elif (current_user.type == 'ldap'):
+            namespace = query_ldap_user(current_user.id).namespace
         task = self.args['task']
         name = self.args['name']
         yaml_file = self.args['yaml']
@@ -173,3 +176,6 @@ class Kubernetes(Resource):
             except ApiException as e:
                 return generate_response(
                     "Exception when calling AppsV1Api->create_namespaced_deployment: %s\n" % e)
+        # elif task == 'reading':
+        #     ret = extension.read_namespaced_ingress(name=name, namespace=namespace)
+        #     print(ret)

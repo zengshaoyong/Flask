@@ -18,3 +18,6 @@ DBUtils
 werkzeug
 mysql-connector
 kubernetes
+flask_ldap3_login
+PyMySQL
+ldap3

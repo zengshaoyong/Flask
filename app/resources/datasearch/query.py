@@ -34,26 +34,39 @@ class Mysql(Resource):
         return __pool.connection()
 
     # @marshal_with(resource_fields, envelope='data')
-    def get(self):
+    def post(self):
         result = []
+        row = {}
         i = 0
         args = self.parser.parse_args()
         sql = args['query']
-        self._cursor.execute(sql)
-        index = self._cursor.description
-        data = self._cursor.fetchall()
-        self._cursor.close()
-        self._conn.close()
+        try:
+            self._cursor.execute(sql)
+        except Exception as err:
+            return generate_response(str(err))
+            # print(str(err))
+        else:
+            index = self._cursor.description
+            data = self._cursor.fetchall()
+        finally:
+            self._cursor.close()
+            self._conn.close()
         if sql == 'show databases':
             for res in data:
                 result.append(res[0])
                 i = i + 1
         if sql == 'show processlist':
-            row = {}
             for res in index:
                 row[res[0]] = data[0][i]
                 i += 1
             result.append(row)
-        # print(data)
-        # print(index)
+        else:
+            for j in data:
+                i = 0
+                for res in index:
+                    row[res[0]] = j[i]
+                    i += 1
+                result.append(row)
         return generate_response(result)
+
+
