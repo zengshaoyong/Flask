@@ -1,9 +1,11 @@
 import mysql.connector
 from config import APP_ENV, configs
-from flask_login import login_required
+from flask_login import login_required, current_user
 from DBUtils.PooledDB import PooledDB
 from flask_restful import Resource, reqparse, fields, marshal_with
 from app.common.abort import generate_response
+from app.common.auth import query_user, query_ldap_user
+from app.models.db import database_info
 
 resource_fields = {
     'Id': fields.String,
@@ -20,26 +22,33 @@ class Mysql(Resource):
     __pool = None
 
     def __init__(self):
-        self._conn = self.__getConn()
-        self._cursor = self._conn.cursor()
+        if (current_user.type == 'account'):
+            self.group = query_user(current_user.id).group
+        if (current_user.type == 'ldap'):
+            self.group = query_ldap_user(current_user.id).group
+        self.database = database_info.query.filter(database_info.group == self.group).first()
+
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('query', type=str)
+        self.parser.add_argument('database', type=str)
+        self.args = self.parser.parse_args()
+        self.base = self.args['database']
+
+        self._conn = self.__getConn()
+        self._cursor = self._conn.cursor()
 
     def __getConn(self):
         if Mysql.__pool is None:
             __pool = PooledDB(creator=mysql.connector, mincached=1, maxcached=20,
-                              host=configs[APP_ENV].host, port=configs[APP_ENV].port, user=configs[APP_ENV].user,
-                              passwd=configs[APP_ENV].password,
-                              db=configs[APP_ENV].database, charset=configs[APP_ENV].charset)
+                              host=self.database.ip, port=self.database.port, user=self.database.user,
+                              passwd=self.database.password,
+                              db=self.base, charset=configs[APP_ENV].charset)
         return __pool.connection()
 
     # @marshal_with(resource_fields, envelope='data')
     def post(self):
         result = []
-        row = {}
-        i = 0
-        args = self.parser.parse_args()
-        sql = args['query']
+        sql = self.args['query']
         try:
             self._cursor.execute(sql)
         except Exception as err:
@@ -51,22 +60,16 @@ class Mysql(Resource):
         finally:
             self._cursor.close()
             self._conn.close()
-        if sql == 'show databases':
+        if sql == 'show databases' or sql == 'show tables':
             for res in data:
                 result.append(res[0])
-                i = i + 1
-        if sql == 'show processlist':
-            for res in index:
-                row[res[0]] = data[0][i]
-                i += 1
-            result.append(row)
+            return generate_response(result)
         else:
             for j in data:
                 i = 0
+                row = {}
                 for res in index:
                     row[res[0]] = j[i]
                     i += 1
                 result.append(row)
-        return generate_response(result)
-
-
+            return generate_response(result)

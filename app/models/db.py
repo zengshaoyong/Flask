@@ -38,4 +38,22 @@ class LdapUser(db.Model):
         self.namespace = namespace
         self.group = group
 
-# db.create_all()
+
+class database_info(db.Model):
+    __tablename__ = 'group_db'
+    id = db.Column(db.Integer, primary_key=True)
+    group = db.Column(db.String(255), nullable=False)
+    ip = db.Column(db.String(255), nullable=False)
+    port = db.Column(db.String(255), nullable=False)
+    user = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
+    def __init__(self, group, ip, port, user, password):
+        self.group = group
+        self.ip = ip
+        self.port = port
+        self.user = user
+        self.password = password
+
+
+db.create_all()
