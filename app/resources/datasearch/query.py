@@ -22,37 +22,38 @@ class Mysql(Resource):
     __pool = None
 
     def __init__(self):
-        if (current_user.type == 'account'):
-            self.group = query_user(current_user.id).group
-        if (current_user.type == 'ldap'):
-            self.group = query_ldap_user(current_user.id).group
-        self.database = database_info.query.filter(database_info.group == self.group).first()
-
         self.parser = reqparse.RequestParser()
-        self.parser.add_argument('query', type=str)
+        self.parser.add_argument('query', type=str, required=True)
         self.parser.add_argument('database', type=str)
+        self.parser.add_argument('instance', type=str, required=True)
         self.args = self.parser.parse_args()
+        self.instance = database_info.query.filter(database_info.instance == self.args['instance']).first()
         self.base = self.args['database']
-
-        self._conn = self.__getConn()
-        self._cursor = self._conn.cursor()
+        if self.instance is not None:
+            self._conn = self.__getConn()
+            self._cursor = self._conn.cursor()
 
     def __getConn(self):
         if Mysql.__pool is None:
             __pool = PooledDB(creator=mysql.connector, mincached=1, maxcached=20,
-                              host=self.database.ip, port=self.database.port, user=self.database.user,
-                              passwd=self.database.password,
+                              host=self.instance.ip, port=self.instance.port, user=self.instance.read_user,
+                              passwd=self.instance.read_password,
                               db=self.base, charset=configs[APP_ENV].charset)
         return __pool.connection()
 
     # @marshal_with(resource_fields, envelope='data')
     def post(self):
+        if self.instance is None or self.instance == '':
+            return generate_response(status=400, data='请选择实例')
         result = []
+        k = 0
         sql = self.args['query']
+        if sql is None or sql == '':
+            return generate_response(status=400, data='请输入语句')
         try:
             self._cursor.execute(sql)
         except Exception as err:
-            return generate_response(str(err))
+            return generate_response(data=str(err), status=400)
             # print(str(err))
         else:
             index = self._cursor.description
@@ -61,8 +62,11 @@ class Mysql(Resource):
             self._cursor.close()
             self._conn.close()
         if sql == 'show databases' or sql == 'show tables':
-            for res in data:
-                result.append(res[0])
+            for j in data:
+                row = {}
+                for res in index:
+                    row[res[0]] = j[0]
+                result.append(row)
             return generate_response(result)
         else:
             for j in data:
@@ -71,5 +75,7 @@ class Mysql(Resource):
                 for res in index:
                     row[res[0]] = j[i]
                     i += 1
+                row['key'] = k
+                k = k + 1
                 result.append(row)
             return generate_response(result)

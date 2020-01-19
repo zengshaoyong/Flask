@@ -4,12 +4,14 @@ monkey.patch_all()
 
 from gevent.pywsgi import WSGIServer
 from app.resources.datasearch.query import *
+from app.resources.instance.query import Instance
 from app import app, api
 from app.common.auth import Login, Logout
 from app.resources.kubernetes.kubernetes import Kubernetes
 from app.resources.kubernetes.Upload import Upload
 
 api.add_resource(Mysql, '/mysql')
+api.add_resource(Instance, '/instance')
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(Kubernetes, '/k8s')
