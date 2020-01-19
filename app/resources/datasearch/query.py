@@ -1,20 +1,10 @@
 import mysql.connector
 from config import APP_ENV, configs
-from flask_login import login_required, current_user
+from flask_login import login_required
 from DBUtils.PooledDB import PooledDB
-from flask_restful import Resource, reqparse, fields, marshal_with
+from flask_restful import Resource, reqparse
 from app.common.abort import generate_response
-from app.common.auth import query_user, query_ldap_user
 from app.models.db import database_info
-
-resource_fields = {
-    'Id': fields.String,
-    'User': fields.String,
-    'Host': fields.String,
-    'db': fields.String,
-    'Command': fields.String,
-    'Time': fields.String,
-}
 
 
 class Mysql(Resource):
