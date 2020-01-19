@@ -23,7 +23,7 @@ class Mysql(Resource):
 
     def __init__(self):
         self.parser = reqparse.RequestParser()
-        self.parser.add_argument('query', type=str, required=True)
+        self.parser.add_argument('sql', type=str, required=True)
         self.parser.add_argument('database', type=str)
         self.parser.add_argument('instance', type=str, required=True)
         self.args = self.parser.parse_args()
@@ -47,7 +47,7 @@ class Mysql(Resource):
             return generate_response(status=400, data='请选择实例')
         result = []
         k = 0
-        sql = self.args['query']
+        sql = self.args['sql']
         if sql is None or sql == '':
             return generate_response(status=400, data='请输入语句')
         try:
