@@ -16,8 +16,8 @@ from werkzeug.security import check_password_hash
 
 # print(check_password_hash(test.password, '123456789'))
 
-
-# test = database_info(instance='test2', ip='127.0.0.1', port='3306', read_user='root', read_password='123456',
+#
+# test = database_info(instance='test', ip='127.0.0.1', port='3306', read_user='root', read_password='123456',
 #                      execute_user='root', execute_password='123456')
 # db.session.add(test)
 # db.session.commit()
