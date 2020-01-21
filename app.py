@@ -3,7 +3,7 @@ from gevent import monkey
 monkey.patch_all()
 
 from gevent.pywsgi import WSGIServer
-from app.resources.datasearch.query import *
+from app.resources.mysql.query import *
 from app.resources.instance.query import Instance
 from app import app, api
 from app.common.auth import Login, Logout
