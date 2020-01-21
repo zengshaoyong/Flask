@@ -5,8 +5,9 @@ from app.common.auth import query_user, query_ldap_user
 from DBUtils.PooledDB import PooledDB
 from flask_restful import Resource, reqparse
 from app.common.abort import generate_response
-from app.models.db import database_info
+from app.models.db import database_info, record_sql
 import json
+from app import db
 
 
 class Mysql(Resource):
@@ -70,6 +71,9 @@ class Mysql(Resource):
                 except Exception as err:
                     return generate_response(data=str(err), status=400)
                 else:
+                    record = record_sql(user=current_user.id, sql=sql)
+                    db.session.add(record)
+                    db.session.commit()
                     index = self._cursor.description
                     if type == 'show' or type == 'select':
                         data = self._cursor.fetchall()
