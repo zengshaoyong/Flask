@@ -20,6 +20,7 @@ class Mysql(Resource):
         self.parser.add_argument('sqls', type=str, required=True)
         self.parser.add_argument('instance', type=str, required=True)
         self.args = self.parser.parse_args()
+        # 判断用户是否有数据库权限
         if (current_user.type == 'account'):
             self.instances = query_user(current_user.id).instances
         if (current_user.type == 'ldap'):
@@ -39,40 +40,48 @@ class Mysql(Resource):
         return __pool.connection()
 
     def post(self):
+        # 没有实例权限直接返回错误
         if self.instance is None or self.instance == '':
             return generate_response(status=400, data='实例不存在或用户权限不足')
+        # 获取数据库连接
+        self._conn = self.__getConn()
+        self._cursor = self._conn.cursor()
         result = []
         k = 0
         # sql = self.args['sql']
         sqls = self.args['sqls']
+        # SQL语句格式检查
         try:
             sql_json = json.loads(sqls)
         except Exception as err:
-            return generate_response(status=400, data='格式不正确')
-        for sql in sql_json['sqls']:
-            if sql is None or sql == '':
-                return generate_response(status=400, data='请输入语句')
-            type = sql.split()[0].lower()
-            # print(sql)
-            self._conn = self.__getConn()
-            self._cursor = self._conn.cursor()
-            try:
-                self._cursor.execute(sql)
-                if type == 'insert' or type == 'delete':
-                    self._conn.commit()
-            except Exception as err:
-                return generate_response(data=str(err), status=400)
-            else:
-                index = self._cursor.description
-                if type == 'show' or type == 'select':
-                    data = self._cursor.fetchall()
+            return generate_response(status=400, data='数据格式不正确')
+        else:
+            for sql in sql_json['sqls']:
+                if sql is None or sql == '':
+                    return generate_response(status=400, data='请输入语句')
+                type = sql.split()[0].lower()
+                # print(sql)
+                # 开始执行SQL语句
+                try:
+                    self._cursor.execute(sql)
+                    # 判断是否需要commit操作
+                    if type == 'insert' or type == 'delete':
+                        self._conn.commit()
+                except Exception as err:
+                    return generate_response(data=str(err), status=400)
                 else:
-                    data = self._cursor.fetchone()
-            finally:
-                self._cursor.close()
-                self._conn.close()
+                    index = self._cursor.description
+                    if type == 'show' or type == 'select':
+                        data = self._cursor.fetchall()
+                    else:
+                        data = self._cursor.fetchone()
+        finally:
+            # 关闭数据库连接
+            self._cursor.close()
+            self._conn.close()
         # print(index)
         # print(data)
+        # 数据格式化处理
         if type == 'show':
             if data is not None:
                 i = 0
