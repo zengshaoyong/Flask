@@ -61,6 +61,7 @@ class Mysql(Resource):
                 if sql is None or sql == '':
                     return generate_response(status=400, data='请输入语句')
                 type = sql.split()[0].lower()
+                type2 = sql.split()[1].lower()
                 # print(sql)
                 # 开始执行SQL语句
                 try:
@@ -86,7 +87,17 @@ class Mysql(Resource):
         # print(index)
         # print(data)
         # 数据格式化处理
-        if type == 'show':
+        if type == 'show' and type2 == 'create':
+            # print(index)
+            i = 0
+            for j in str(data[0]).split('\\n'):
+                row = {}
+                row['Create Table'] = j
+                row['key'] = i
+                i = i + 1
+                result.append(row)
+            return generate_response(result)
+        if type == 'show' and type2 != 'create':
             if data is not None:
                 i = 0
                 for j in data:
