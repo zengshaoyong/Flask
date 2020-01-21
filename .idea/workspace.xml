@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a48c937e-f66f-41ba-9de2-480a2352ea53" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/common/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/datasearch/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/datasearch/query.py" afterDir="false" />
-    </list>
+    <list default="true" id="a48c937e-f66f-41ba-9de2-480a2352ea53" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -230,7 +225,7 @@
       <workItem from="1579157233318" duration="398000" />
       <workItem from="1579157673039" duration="161000" />
       <workItem from="1579157903065" duration="46497000" />
-      <workItem from="1579427202371" duration="31307000" />
+      <workItem from="1579427202371" duration="31572000" />
     </task>
     <task id="LOCAL-00001" summary="增加war包与jar包的区分">
       <created>1564475285542</created>
