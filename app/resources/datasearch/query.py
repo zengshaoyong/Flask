@@ -1,6 +1,7 @@
 import mysql.connector
 from config import APP_ENV, configs
-from flask_login import login_required
+from flask_login import login_required, current_user
+from app.common.auth import query_user, query_ldap_user
 from DBUtils.PooledDB import PooledDB
 from flask_restful import Resource, reqparse
 from app.common.abort import generate_response
@@ -19,11 +20,15 @@ class Mysql(Resource):
         self.parser.add_argument('sqls', type=str, required=True)
         self.parser.add_argument('instance', type=str, required=True)
         self.args = self.parser.parse_args()
-        self.instance = database_info.query.filter(database_info.instance == self.args['instance']).first()
+        if (current_user.type == 'account'):
+            self.instances = query_user(current_user.id).instances
+        if (current_user.type == 'ldap'):
+            self.instances = query_ldap_user(current_user.id).instances
+        if self.args['instance'] in self.instances.split(','):
+            self.instance = database_info.query.filter(database_info.instance == self.args['instance']).first()
+        else:
+            self.instance = None
         self.base = self.args['database']
-        # if self.instance is not None:
-        #     self._conn = self.__getConn()
-        #     self._cursor = self._conn.cursor()
 
     def __getConn(self):
         if Mysql.__pool is None:
@@ -35,20 +40,22 @@ class Mysql(Resource):
 
     def post(self):
         if self.instance is None or self.instance == '':
-            return generate_response(status=400, data='请选择实例')
+            return generate_response(status=400, data='实例不存在或用户权限不足')
         result = []
         k = 0
         # sql = self.args['sql']
         sqls = self.args['sqls']
-        # print(sqls)
-        sql_json = json.loads(sqls)
+        try:
+            sql_json = json.loads(sqls)
+        except Exception as err:
+            return generate_response(status=400, data='格式不正确')
         for sql in sql_json['sqls']:
-            if self.instance is not None:
-                self._conn = self.__getConn()
-                self._cursor = self._conn.cursor()
             if sql is None or sql == '':
                 return generate_response(status=400, data='请输入语句')
             type = sql.split()[0].lower()
+            # print(sql)
+            self._conn = self.__getConn()
+            self._cursor = self._conn.cursor()
             try:
                 self._cursor.execute(sql)
                 if type == 'insert' or type == 'delete':
@@ -64,6 +71,8 @@ class Mysql(Resource):
             finally:
                 self._cursor.close()
                 self._conn.close()
+        # print(index)
+        # print(data)
         if type == 'show':
             if data is not None:
                 i = 0

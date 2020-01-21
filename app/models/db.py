@@ -1,5 +1,6 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import Column, TIMESTAMP, text
 
 
 class Userinfo(db.Model):
@@ -62,6 +63,18 @@ class database_info(db.Model):
         self.read_password = read_password
         self.execute_user = execute_user
         self.execute_password = execute_password
+
+
+class record_sql(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(255), nullable=False)
+    time = db.Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), server_onupdate=text('CURRENT_TIMESTAMP'))
+    sql = db.Column(db.String(255), nullable=False)
+
+    def __init__(self, user, time, sql):
+        self.user = user
+        self.time = time
+        self.sql = sql
 
 
 db.create_all()
