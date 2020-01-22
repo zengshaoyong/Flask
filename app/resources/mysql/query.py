@@ -23,11 +23,24 @@ class Mysql(Resource):
         self.args = self.parser.parse_args()
         # 判断用户是否有数据库权限
         if (current_user.type == 'account'):
-            self.instances = query_user(current_user.id).instances
+            self.execute_instances = query_user(current_user.id).execute_instances
+            self.read_instances = query_user(current_user.id).read_instances
         if (current_user.type == 'ldap'):
-            self.instances = query_ldap_user(current_user.id).instances
-        if self.args['instance'] in self.instances.split(','):
-            self.instance = database_info.query.filter(database_info.instance == self.args['instance']).first()
+            self.execute_instances = query_ldap_user(current_user.id).execute_instances
+            self.read_instances = query_ldap_user(current_user.id).read_instances
+        # 判断用户数据库（读/写）权限
+        if self.read_instances:
+            if self.args['instance'] in self.read_instances.split(','):
+                self.instance = database_info.query.filter(database_info.instance == self.args['instance']).first()
+                self.db_host = self.instance.ip
+                self.db_user = self.instance.read_user
+                self.db_pass = self.instance.read_password
+        if self.execute_instances:
+            if self.args['instance'] in self.execute_instances.split(','):
+                self.instance = database_info.query.filter(database_info.instance == self.args['instance']).first()
+                self.db_host = self.instance.ip
+                self.db_user = self.instance.execute_user
+                self.db_pass = self.instance.execute_password
         else:
             self.instance = None
         self.base = self.args['database']
@@ -35,8 +48,8 @@ class Mysql(Resource):
     def __getConn(self):
         if Mysql.__pool is None:
             __pool = PooledDB(creator=mysql.connector, mincached=1, maxcached=20,
-                              host=self.instance.ip, port=self.instance.port, user=self.instance.read_user,
-                              passwd=self.instance.read_password,
+                              host=self.db_host, port=self.instance.port, user=self.db_user,
+                              passwd=self.db_pass,
                               db=self.base, charset=configs[APP_ENV].charset)
         return __pool.connection()
 

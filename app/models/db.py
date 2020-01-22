@@ -11,15 +11,17 @@ class Userinfo(db.Model):
     currentAuthority = db.Column(db.String(255), nullable=False)
     namespace = db.Column(db.String(255))
     group = db.Column(db.String(255), nullable=False)
-    instances = db.Column(db.String(255))
+    execute_instances = db.Column(db.String(255))
+    read_instances = db.Column(db.String(255))
 
-    def __init__(self, username, password, currentAuthority, namespace, group, instances):
+    def __init__(self, username, password, currentAuthority, namespace, group, execute_instances, read_instances):
         self.username = username
         self.password = generate_password_hash(password)
         self.currentAuthority = currentAuthority
         self.namespace = namespace
         self.group = group
-        self.instances = instances
+        self.execute_instances = execute_instances
+        self.read_instances = read_instances
 
         # 定义一个验证密码的方法
 
@@ -34,14 +36,16 @@ class LdapUser(db.Model):
     currentAuthority = db.Column(db.String(255), nullable=False)
     namespace = db.Column(db.String(255))
     group = db.Column(db.String(255), nullable=False)
-    instances = db.Column(db.String(255))
+    execute_instances = db.Column(db.String(255))
+    read_instances = db.Column(db.String(255))
 
-    def __init__(self, username, currentAuthority, namespace, group, instances):
+    def __init__(self, username, currentAuthority, namespace, group, execute_instances, read_instances):
         self.username = username
         self.currentAuthority = currentAuthority
         self.namespace = namespace
         self.group = group
-        self.instances = instances
+        self.execute_instances = execute_instances
+        self.read_instances = read_instances
 
 
 class database_info(db.Model):

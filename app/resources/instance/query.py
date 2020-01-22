@@ -10,10 +10,18 @@ class Instance(Resource):
 
     def __init__(self):
         if (current_user.type == 'account'):
-            self.instance = query_user(current_user.id).instances
+            self.execute_instances = query_user(current_user.id).execute_instances
+            self.read_instances = query_user(current_user.id).read_instances
         if (current_user.type == 'ldap'):
-            self.instance = query_ldap_user(current_user.id).instances
+            self.execute_instances = query_ldap_user(current_user.id).execute_instances
+            self.read_instances = query_ldap_user(current_user.id).read_instances
 
     def get(self):
-        instances = self.instance.split(',')
+        execute_instances = []
+        read_instances = []
+        if self.execute_instances:
+            execute_instances = self.execute_instances.split(',')
+        if self.read_instances:
+            read_instances = self.read_instances.split(',')
+        instances = list(set(execute_instances).union(set(read_instances)))
         return generate_response(instances)
