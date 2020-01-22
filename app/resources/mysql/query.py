@@ -29,6 +29,7 @@ class Mysql(Resource):
             self.execute_instances = query_ldap_user(current_user.id).execute_instances
             self.read_instances = query_ldap_user(current_user.id).read_instances
         # 判断用户数据库（读/写）权限
+        self.instance = None
         if self.read_instances:
             if self.args['instance'] in self.read_instances.split(','):
                 self.instance = database_info.query.filter(database_info.instance == self.args['instance']).first()
@@ -41,8 +42,6 @@ class Mysql(Resource):
                 self.db_host = self.instance.ip
                 self.db_user = self.instance.execute_user
                 self.db_pass = self.instance.execute_password
-        else:
-            self.instance = None
         self.base = self.args['database']
 
     def __getConn(self):
