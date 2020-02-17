@@ -38,6 +38,7 @@ class LdapUser(db.Model):
     group = db.Column(db.String(255), nullable=False)
     execute_instances = db.Column(db.String(255))
     read_instances = db.Column(db.String(255))
+    redis = db.Column(db.String(255))
 
     def __init__(self, username, currentAuthority, namespace, group, execute_instances, read_instances):
         self.username = username

@@ -78,8 +78,8 @@ class Login(Resource):
             if res == 'success':
                 user = query_ldap_user(username)
                 if user is None:
-                    new_user = LdapUser(username=username, currentAuthority='guest', namespace='default', group='test',
-                                        instances='')
+                    new_user = LdapUser(username=username, currentAuthority='0', namespace='default', group='test',
+                                        execute_instances='', read_instances='')
                     db.session.add(new_user)
                     db.session.commit()
                     user = query_ldap_user(username)

@@ -9,10 +9,12 @@ from werkzeug.security import check_password_hash
 # print(test.__dict__)
 
 #
-test = Userinfo(username='test', password='123456789', currentAuthority='1', namespace='kube-system', group='test',
-                execute_instances='test1,test2', read_instances=None)
+test = Userinfo(username='test5', password='123456789', currentAuthority='0', namespace='kube-system', group='test',
+                execute_instances=None, read_instances=None)
 db.session.add(test)
 db.session.commit()
+
+
 
 # print(check_password_hash(test.password, '123456789'))
 
