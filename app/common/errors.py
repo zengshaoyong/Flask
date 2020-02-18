@@ -11,7 +11,7 @@ errors = {
     'TooManyRequests': {
         'message': "TOO MANY REQUESTS.",
         'status': 429,
-        # 'extra': "Any extra information you want.",
+        'data': '访问太频繁',
     },
     'UnAuthorized': {
         'message': "请登陆",

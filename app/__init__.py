@@ -1,6 +1,6 @@
 from flask import Flask
 import flask_restful
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 # from flask_cache import Cache
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -31,5 +31,5 @@ flask_restful.abort = my_abort
 limiter = Limiter(
     app,
     key_func=get_remote_address,
-    default_limits=["300 per minute", "10 per second"],
+    default_limits=["600 per minute", "10 per second"],
 )

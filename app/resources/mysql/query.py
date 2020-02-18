@@ -8,10 +8,13 @@ from app.common.abort import generate_response
 from app.models.db import database_info, record_sql
 import json
 from app import db
+from app import limiter
 
 
 class Mysql(Resource):
-    decorators = [login_required]
+    decorators = [login_required,
+                  limiter.limit(limit_value="1 per second", key_func=lambda: current_user.id,
+                                error_message=generate_response(data='访问太频繁', status='429'))]
     __pool = None
 
     def __init__(self):
