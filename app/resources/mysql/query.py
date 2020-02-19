@@ -12,9 +12,8 @@ from app import limiter
 
 
 class Mysql(Resource):
-    decorators = [login_required,
-                  limiter.limit(limit_value="1 per second", key_func=lambda: current_user.id,
-                                error_message=generate_response(data='访问太频繁', status='429'))]
+    decorators = [limiter.limit(limit_value="1 per second", key_func=lambda: current_user.id,
+                                error_message=generate_response(data='访问太频繁', status='429')), login_required]
     __pool = None
 
     def __init__(self):
