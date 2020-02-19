@@ -129,12 +129,13 @@ class Mysql(Resource):
                     i = 0
                     row = {}
                     for res in index:
-                        row[res[0]] = j[i]
+                        row[res[0]] = str(j[i])
                         i += 1
                     row['key'] = k
                     k = k + 1
                     result.append(row)
                 return generate_response(result)
+                # print(generate_response(result))
         else:
             if data is None:
                 return generate_response(data='执行成功', status=201)
