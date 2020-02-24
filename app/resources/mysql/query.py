@@ -24,10 +24,10 @@ class Mysql(Resource):
         self.parser.add_argument('instance', type=str, required=True)
         self.args = self.parser.parse_args()
         # 判断用户是否有数据库权限
-        if (current_user.type == 'account'):
+        if current_user.type == 'account':
             self.execute_instances = query_user(current_user.id).execute_instances
             self.read_instances = query_user(current_user.id).read_instances
-        if (current_user.type == 'ldap'):
+        if current_user.type == 'ldap':
             self.execute_instances = query_ldap_user(current_user.id).execute_instances
             self.read_instances = query_ldap_user(current_user.id).read_instances
         # 判断用户数据库（读/写）权限
@@ -105,9 +105,7 @@ class Mysql(Resource):
             # print(index)
             i = 0
             for j in str(data[0]).split('\\n'):
-                row = {}
-                row['Create Table'] = j
-                row['key'] = i
+                row = {'Create Table': j, 'key': i}
                 i = i + 1
                 result.append(row)
             return generate_response(result)
@@ -115,10 +113,8 @@ class Mysql(Resource):
             if data is not None:
                 i = 0
                 for j in data:
-                    row = {}
                     for res in index:
-                        row[res[0]] = j[0]
-                        row['key'] = i
+                        row = {res[0]: j[0], 'key': i}
                     result.append(row)
                     i = i + 1
                 return generate_response(result)
