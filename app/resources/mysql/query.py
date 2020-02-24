@@ -81,7 +81,7 @@ class Mysql(Resource):
                 try:
                     self._cursor.execute(sql)
                     # 判断是否需要commit操作
-                    if type == 'insert' or type == 'delete':
+                    if type == 'insert' or type == 'delete' or type == 'update':
                         self._conn.commit()
                 except Exception as err:
                     return generate_response(data=str(err), status=400)
