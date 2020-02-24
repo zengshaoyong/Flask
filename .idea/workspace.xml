@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a48c937e-f66f-41ba-9de2-480a2352ea53" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/resources/mysql/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/mysql/query.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/resources/audit/audit.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/audit/audit.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +254,7 @@
       <workItem from="1581920606876" duration="51000" />
       <workItem from="1581920685541" duration="17000" />
       <workItem from="1581920880543" duration="41000" />
-      <workItem from="1581921536715" duration="40663000" />
+      <workItem from="1581921536715" duration="40884000" />
     </task>
     <task id="LOCAL-00001" summary="增加war包与jar包的区分">
       <created>1564475285542</created>
