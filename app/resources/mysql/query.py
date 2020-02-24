@@ -86,7 +86,7 @@ class Mysql(Resource):
                 except Exception as err:
                     return generate_response(data=str(err), status=400)
                 else:
-                    record = record_sql(user=current_user.id, sql=sql)
+                    record = record_sql(user=current_user.id, sql=sql, instance=self.instance.instance)
                     db.session.add(record)
                     db.session.commit()
                     index = self._cursor.description

@@ -74,13 +74,15 @@ class record_sql(db.Model):
     __tablename__ = 'record'
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.String(255), nullable=False)
+    instance = db.Column(db.String(255), nullable=False)
     time = db.Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'),
                      server_onupdate=text('CURRENT_TIMESTAMP'))
     sql = db.Column(db.String(255), nullable=False)
 
-    def __init__(self, user, sql):
+    def __init__(self, user, sql, instance):
         self.user = user
         self.sql = sql
+        self.instance = instance
 
 
 db.create_all()
