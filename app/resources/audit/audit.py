@@ -1,7 +1,8 @@
 import time
 
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask_restful import Resource, reqparse
+from app import limiter
 
 from app.common.abort import generate_response
 from app.models.db import record_sql
@@ -28,7 +29,8 @@ def local_time(timestamp):
 
 
 class Audit(Resource):
-    decorators = [login_required]
+    decorators = [limiter.limit(limit_value="1 per second", key_func=lambda: current_user.id,
+                                error_message=generate_response(data='访问太频繁', status='429')), login_required]
 
     def __init__(self):
         self.parser = reqparse.RequestParser()
