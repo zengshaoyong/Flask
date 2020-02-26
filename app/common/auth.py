@@ -6,6 +6,7 @@ from flask_restful import Resource, reqparse
 from flask import session
 from app.common.abort import generate_response, login_response
 from app.models.db import Userinfo, LdapUser, db
+from config import APP_ENV, configs
 
 
 def query_user(username):
@@ -19,7 +20,7 @@ def query_ldap_user(username):
 
 
 def query_ldap(username, password):
-    server = Server('ldap01.thinkinpower.net', use_ssl=True, get_info=ALL)
+    server = Server(configs[APP_ENV].ldap_server, use_ssl=True, get_info=ALL)
     username = "uid=%s,ou=People,dc=rfchina,dc=com" % (username)
     try:
         Connection(server, username, password, auto_bind=True)

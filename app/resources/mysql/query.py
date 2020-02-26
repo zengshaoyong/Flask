@@ -86,7 +86,9 @@ class Mysql(Resource):
                     result.append(row)
                     return generate_response(result)
                 else:
-                    if sql != 'show databases' or sql != 'show tables':
+                    # 记录SQL语句，show语句除外
+                    if type != 'show':
+                        # print(sql)
                         record = record_sql(user=current_user.id, sql=sql, instance=self.instance.instance)
                         db.session.add(record)
                         db.session.commit()
@@ -94,9 +96,11 @@ class Mysql(Resource):
                     if type == 'insert' or type == 'delete' or type == 'update' or type == 'create' or type == 'drop':
                         if type == 'insert' or type == 'delete' or type == 'update':
                             self._conn.commit()
+                        # 执行语句返回受影响的行数
                         effect_row = self._cursor.rowcount
                         row = {'result': str(sql) + ' ' + '影响行数:' + str(effect_row)}
                         result.append(row)
+                    # 如果是查询语句，取表头和表数据
                     if type == 'show' or type == 'select':
                         data = self._cursor.fetchall()
                         index = self._cursor.description
