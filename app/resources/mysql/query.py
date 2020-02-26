@@ -80,21 +80,28 @@ class Mysql(Resource):
                 # 开始执行SQL语句
                 try:
                     self._cursor.execute(sql)
-                    # 判断是否需要commit操作
-                    if type == 'insert' or type == 'delete' or type == 'update':
-                        self._conn.commit()
                 except Exception as err:
-                    return generate_response(data=str(err), status=400)
+                    self._conn.rollback()
+                    row = {'result': str(sql) + ' ' + str(err)}
+                    result.append(row)
+                    return generate_response(result)
                 else:
                     if sql != 'show databases' or sql != 'show tables':
                         record = record_sql(user=current_user.id, sql=sql, instance=self.instance.instance)
                         db.session.add(record)
                         db.session.commit()
-                    index = self._cursor.description
+                    # 判断是否需要commit操作
+                    if type == 'insert' or type == 'delete' or type == 'update' or type == 'create' or type == 'drop':
+                        if type == 'insert' or type == 'delete' or type == 'update':
+                            self._conn.commit()
+                        effect_row = self._cursor.rowcount
+                        row = {'result': str(sql) + ' ' + '影响行数:' + str(effect_row)}
+                        result.append(row)
                     if type == 'show' or type == 'select':
                         data = self._cursor.fetchall()
-                    else:
-                        data = self._cursor.fetchone()
+                        index = self._cursor.description
+                    # else:
+                    #     data = self._cursor.fetchone()
         finally:
             # 关闭数据库连接
             self._cursor.close()
@@ -132,6 +139,8 @@ class Mysql(Resource):
                     result.append(row)
                 return generate_response(result)
                 # print(generate_response(result))
-        else:
-            if data is None:
-                return generate_response(data='执行成功', status=201)
+        if type == 'update' or type == 'delete' or type == 'insert' or type == 'create' or type == 'drop':
+            return generate_response(result)
+        # else:
+        #     if data is None:
+        #         return generate_response(data='执行成功', status=201)
