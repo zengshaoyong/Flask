@@ -86,7 +86,7 @@ class Mysql(Resource):
                 except Exception as err:
                     return generate_response(data=str(err), status=400)
                 else:
-                    if sql != 'show databases':
+                    if sql != 'show databases' or sql != 'show tables':
                         record = record_sql(user=current_user.id, sql=sql, instance=self.instance.instance)
                         db.session.add(record)
                         db.session.commit()

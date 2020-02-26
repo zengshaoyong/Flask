@@ -10,10 +10,10 @@ from app.models.db import record_sql
 def record(username, st_time, end_time):
     # result = record_sql.query.filter(record_sql.user == username, record_sql.time >= '2020-02-24 10:05:50',
     #                                  record_sql.time <= '2020-02-24 11:09:44').all()
-    if username is not None:
+    if username != '':
         result = record_sql.query.filter(record_sql.user == username, record_sql.time >= local_time(st_time),
                                          record_sql.time <= local_time(end_time)).all()
-    if username is None:
+    if username == '':
         result = record_sql.query.filter(record_sql.time >= local_time(st_time),
                                          record_sql.time <= local_time(end_time)).all()
     return result
