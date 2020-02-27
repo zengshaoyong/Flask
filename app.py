@@ -3,8 +3,8 @@ from gevent import monkey
 monkey.patch_all()
 
 from gevent.pywsgi import WSGIServer
-from app.resources.mysql.query import *
-from app.resources.instance.query import Instance
+from app.resources.mysql.execute.query import *
+from app.resources.mysql.instance.query import Instance
 from app import app, api
 from app.common.auth import Login, Logout
 from app.resources.kubernetes.kubernetes import Kubernetes
