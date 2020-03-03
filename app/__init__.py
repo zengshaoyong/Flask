@@ -18,7 +18,7 @@ app = Flask(__name__)
 api = Api(app, errors=errors)
 CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = configs[APP_ENV].SECRET_KEY
-app.permanent_session_lifetime = timedelta(minutes=15)
+app.permanent_session_lifetime = timedelta(minutes=30)
 login_manager.init_app(app)
 login_manager.session_protection = 'strong'
 # cache.init_app(app)

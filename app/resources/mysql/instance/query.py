@@ -9,10 +9,10 @@ class Instance(Resource):
     decorators = [login_required]
 
     def __init__(self):
-        if (current_user.type == 'account'):
+        if current_user.type == 'account':
             self.execute_instances = query_user(current_user.id).execute_instances
             self.read_instances = query_user(current_user.id).read_instances
-        if (current_user.type == 'ldap'):
+        if current_user.type == 'ldap':
             self.execute_instances = query_ldap_user(current_user.id).execute_instances
             self.read_instances = query_ldap_user(current_user.id).read_instances
 

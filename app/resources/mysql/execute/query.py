@@ -12,7 +12,7 @@ from app import limiter
 
 
 class Mysql(Resource):
-    decorators = [limiter.limit(limit_value="1 per second", key_func=lambda: current_user.id,
+    decorators = [limiter.limit(limit_value="3 per second", key_func=lambda: current_user.id,
                                 error_message=generate_response(data='访问太频繁', status='429')), login_required]
     __pool = None
 
@@ -125,10 +125,12 @@ class Mysql(Resource):
             if data is not None:
                 i = 0
                 for j in data:
-                    for res in index:
-                        row = {res[0]: j[0], 'key': i}
-                    result.append(row)
-                    i = i + 1
+                    if 'information_schema' not in j[0] and 'performance_schema' not in j[0] and 'sys' not in j[0] \
+                            and 'mysql' not in j[0]:
+                        for res in index:
+                            row = {res[0]: j[0], 'key': i}
+                        result.append(row)
+                        i = i + 1
                 return generate_response(result)
         if type == 'select':
             if data is not None:

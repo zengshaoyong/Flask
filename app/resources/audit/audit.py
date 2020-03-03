@@ -29,7 +29,7 @@ def local_time(timestamp):
 
 
 class Audit(Resource):
-    decorators = [limiter.limit(limit_value="1 per second", key_func=lambda: current_user.id,
+    decorators = [limiter.limit(limit_value="3 per second", key_func=lambda: current_user.id,
                                 error_message=generate_response(data='访问太频繁', status='429')), login_required]
 
     def __init__(self):
@@ -40,7 +40,11 @@ class Audit(Resource):
         self.args = self.parser.parse_args()
 
     def get(self):
-        result = record(self.args['username'], self.args['st_time'], self.args['end_time'])
+        if self.args['username'] == 'current_user':
+            result = record_sql.query.filter(record_sql.user == current_user.id).order_by(record_sql.id.desc()).limit(
+                10).all()
+        else:
+            result = record(self.args['username'], self.args['st_time'], self.args['end_time'])
         results = []
         for i in result:
             row = {'key': str(i.id), 'username': str(i.user), 'time': str(i.time), 'instance': str(i.instance),
