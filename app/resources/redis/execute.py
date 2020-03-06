@@ -14,17 +14,28 @@ class Redis(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('key', type=str, required=True)
+        self.parser.add_argument('type', type=str, required=True)
         self.args = self.parser.parse_args()
         # 判断用户是否有redis权限
-        if current_user.type == 'account':
-            self.redis = query_user(current_user.id).redis
+        self.redis = None
         if current_user.type == 'ldap':
             self.redis = query_ldap_user(current_user.id).redis
 
     def get(self):
-        if self.redis == '':
+        if self.redis == '' or self.redis is None:
             return generate_response(status=400, data='用户权限不足')
         redis_host = self.redis.split(':')[0]
         redis_port = self.redis.split(':')[1]
         Pool = ConnectionPool(host=redis_host, port=redis_port, max_connections=100)
         conn = redis.Redis(connection_pool=Pool)
+        results = []
+        if self.args['type'] == 'scan':
+            result = conn.scan_iter(match=self.args['key'], count=None)
+            for i in result:
+                results.append(i.decode())
+            return generate_response(results)
+        if self.args['type'] == 'get':
+            result = conn.get(self.args['key'])
+            if result is not None:
+                results.append(result.decode())
+            return generate_response(results)
