@@ -49,6 +49,6 @@ class Redis(Resource):
             ttl = conn.ttl(self.args['key'])
             # result = conn.get(self.args['key'])
             if value is not None:
-                results.append({'value': value.decode()})
-                results.append({'expire': ttl})
+                results.append({'value': str(value.decode())})
+                results.append({'expire': str(ttl)})
             return generate_response(results)
