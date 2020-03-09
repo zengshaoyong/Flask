@@ -70,6 +70,21 @@ class database_info(db.Model):
         self.execute_password = execute_password
 
 
+class redis_info(db.Model):
+    __tablename__ = 'redis_info'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    ip = db.Column(db.String(255), nullable=False)
+    port = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255))
+
+    def __init__(self, ip, port, password, name):
+        self.ip = ip
+        self.port = port
+        self.password = password
+        self.name = name
+
+
 class record_sql(db.Model):
     __tablename__ = 'record'
     id = db.Column(db.Integer, primary_key=True)
