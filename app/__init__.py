@@ -24,6 +24,7 @@ login_manager.session_protection = 'strong'
 # cache.init_app(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = configs[APP_ENV].SQLALCHEMY_DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_POOL_RECYCLE'] = 3600
 # SQLALCHEMY_COMMIT_TEARDOWN = True
 db = SQLAlchemy(app)
 flask_restful.abort = my_abort
