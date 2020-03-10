@@ -25,6 +25,8 @@ class Redis(Resource):
             # print(self.redis)
 
     def get(self):
+        if self.args['redis'] == '' or self.args['redis'] is None:
+            return generate_response(status=400, data='请先选择redis实例')
         if self.redis == '' or self.redis is None:
             return generate_response(status=400, data='用户权限不足')
         if self.args['type'] == 'get_instance':
