@@ -41,13 +41,15 @@ class Redis(Resource):
         Pool = ConnectionPool(host=redis_host, port=redis_port, password=password, max_connections=100)
         conn = redis.Redis(connection_pool=Pool)
         results = []
+        key = 0
         if self.args['type'] == 'scan':
             try:
                 result = conn.scan_iter(match=self.args['key'], count=None)
             except Exception as err:
                 return generate_response(data=str(err), status=400)
             for i in result:
-                results.append({'value': str(i.decode())})
+                results.append({'value': str(i.decode()), 'key': key})
+                key = key + 1
             return generate_response(results)
         if self.args['type'] == 'hscan':
             try:
@@ -58,6 +60,7 @@ class Redis(Resource):
             dict1 = {}
             for item in result:
                 dict1[str(item[0].decode())] = str(item[1].decode())
+            dict1['key'] = key
             results.append(dict1)
             return generate_response(results)
         if self.args['type'] == 'lscan':
@@ -67,7 +70,8 @@ class Redis(Resource):
             except Exception as err:
                 return generate_response(data=str(err), status=400)
             for i in result:
-                results.append({'value': str(i.decode())})
+                results.append({'value': str(i.decode()), 'key': key})
+                key = key + 1
             return generate_response(results)
         if self.args['type'] == 'get':
             try:
@@ -76,5 +80,5 @@ class Redis(Resource):
             except Exception as err:
                 return generate_response(data=str(err), status=400)
             if value is not None:
-                results.append({'value': str(value.decode()), 'expire': str(ttl)})
+                results.append({'value': str(value.decode()), 'expire': str(ttl), 'key': key})
             return generate_response(results)
