@@ -47,7 +47,7 @@ class Redis(Resource):
             except Exception as err:
                 return generate_response(data=str(err), status=400)
             for i in result:
-                results.append({'value': i.decode()})
+                results.append({'value': str(i.decode())})
             return generate_response(results)
         if self.args['type'] == 'hscan':
             try:
@@ -57,7 +57,7 @@ class Redis(Resource):
                 return generate_response(data=str(err), status=400)
             dict1 = {}
             for item in result:
-                dict1[item[0].decode()] = item[1].decode()
+                dict1[str(item[0].decode())] = str(item[1].decode())
             results.append(dict1)
             return generate_response(results)
         if self.args['type'] == 'lscan':
@@ -67,7 +67,7 @@ class Redis(Resource):
             except Exception as err:
                 return generate_response(data=str(err), status=400)
             for i in result:
-                results.append({'value': i.decode()})
+                results.append({'value': str(i.decode())})
             return generate_response(results)
         if self.args['type'] == 'get':
             try:
