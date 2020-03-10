@@ -3,7 +3,8 @@ from flask_login import login_required, current_user
 from app.common.abort import generate_response
 from app import limiter
 from app.common.auth import query_user, query_ldap_user
-from app.models.db import redis_info
+from app.models.db import redis_info, record_redis
+from app import db
 import redis
 from redis import ConnectionPool
 
@@ -29,8 +30,12 @@ class Redis(Resource):
             return generate_response(status=400, data='用户权限不足')
         if self.args['type'] == 'get_instance':
             return generate_response(data=self.redis.split(','))
-        if self.args['redis'] == '' or self.args['redis'] is None:
+        if self.args['redis'].strip() == '' or self.args['redis'] is None:
             return generate_response(status=400, data='请先选择redis实例')
+        if self.args['key'].strip() == '' or self.args['key'] is None:
+            return generate_response(status=400, data='请输入key')
+        if self.args['type'].strip() == '' or self.args['type'] is None:
+            return generate_response(status=400, data='请输入type')
         if self.args['redis'] in self.redis.split(','):
             instance = redis_info.query.filter(redis_info.name == self.args['redis']).first()
             redis_host = instance.ip
@@ -42,6 +47,10 @@ class Redis(Resource):
         conn = redis.Redis(connection_pool=Pool)
         results = []
         key = 0
+        record = record_redis(user=current_user.id, action=self.args['type'], instance=self.args['redis'],
+                              key=self.args['key'])
+        db.session.add(record)
+        db.session.commit()
         if self.args['type'] == 'scan':
             try:
                 result = conn.scan_iter(match=self.args['key'], count=None)

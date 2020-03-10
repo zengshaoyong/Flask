@@ -100,4 +100,21 @@ class record_sql(db.Model):
         self.instance = instance
 
 
+class record_redis(db.Model):
+    __tablename__ = 'record_redis'
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(255), nullable=False)
+    instance = db.Column(db.String(255), nullable=False)
+    time = db.Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'),
+                     server_onupdate=text('CURRENT_TIMESTAMP'))
+    action = db.Column(db.String(255), nullable=False)
+    key = db.Column(db.String(255), nullable=False)
+
+    def __init__(self, user, action, instance, key):
+        self.user = user
+        self.instance = instance
+        self.action = action
+        self.key = key
+
+
 db.create_all()
