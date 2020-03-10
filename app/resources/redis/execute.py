@@ -40,15 +40,39 @@ class Redis(Resource):
         conn = redis.Redis(connection_pool=Pool)
         results = []
         if self.args['type'] == 'scan':
-            result = conn.scan_iter(match=self.args['key'], count=None)
+            try:
+                result = conn.scan_iter(match=self.args['key'], count=None)
+            except Exception as err:
+                return generate_response(data=str(err), status=400)
             for i in result:
-                results.append(i.decode())
+                results.append({'value': i.decode()})
+            return generate_response(results)
+        if self.args['type'] == 'hscan':
+            try:
+                len = conn.hlen(self.args['key'])
+                result = conn.hscan_iter(self.args['key'])
+            except Exception as err:
+                return generate_response(data=str(err), status=400)
+            dict1 = {}
+            for item in result:
+                dict1[item[0].decode()] = item[1].decode()
+            results.append(dict1)
+            return generate_response(results)
+        if self.args['type'] == 'lscan':
+            try:
+                llen = conn.llen(self.args['key'])
+                result = conn.lrange(self.args['key'], 0, llen)
+            except Exception as err:
+                return generate_response(data=str(err), status=400)
+            for i in result:
+                results.append({'value': i.decode()})
             return generate_response(results)
         if self.args['type'] == 'get':
-            value = conn.get(self.args['key'])
-            ttl = conn.ttl(self.args['key'])
-            # result = conn.get(self.args['key'])
+            try:
+                value = conn.get(self.args['key'])
+                ttl = conn.ttl(self.args['key'])
+            except Exception as err:
+                return generate_response(data=str(err), status=400)
             if value is not None:
-                results.append({'value': str(value.decode())})
-                results.append({'expire': str(ttl)})
+                results.append({'value': str(value.decode()), 'expire': str(ttl)})
             return generate_response(results)
