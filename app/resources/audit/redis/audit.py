@@ -5,18 +5,18 @@ from flask_restful import Resource, reqparse
 from app import limiter
 
 from app.common.abort import generate_response
-from app.models.db import record_sql
+from app.models.db import record_redis
 
 
 def record(username, st_time, end_time):
     # result = record_sql.query.filter(record_sql.user == username, record_sql.time >= '2020-02-24 10:05:50',
     #                                  record_sql.time <= '2020-02-24 11:09:44').all()
     if username != '':
-        result = record_sql.query.filter(record_sql.user == username, record_sql.time >= local_time(st_time),
-                                         record_sql.time <= local_time(end_time)).all()
+        result = record_redis.query.filter(record_redis.user == username, record_redis.time >= local_time(st_time),
+                                           record_redis.time <= local_time(end_time)).all()
     if username == '':
-        result = record_sql.query.filter(record_sql.time >= local_time(st_time),
-                                         record_sql.time <= local_time(end_time)).all()
+        result = record_redis.query.filter(record_redis.time >= local_time(st_time),
+                                           record_redis.time <= local_time(end_time)).all()
     return result
 
 
@@ -28,7 +28,7 @@ def local_time(timestamp):
     return localtime
 
 
-class Audit(Resource):
+class Audit_redis(Resource):
     decorators = [limiter.limit(limit_value="3 per second", key_func=lambda: current_user.id,
                                 error_message=generate_response(data='访问太频繁', status='429')), login_required]
 
@@ -40,14 +40,10 @@ class Audit(Resource):
         self.args = self.parser.parse_args()
 
     def get(self):
-        if self.args['username'] == 'current_user':
-            result = record_sql.query.filter(record_sql.user == current_user.id).order_by(record_sql.id.desc()).limit(
-                10).all()
-        else:
-            result = record(self.args['username'], self.args['st_time'], self.args['end_time'])
+        result = record(self.args['username'], self.args['st_time'], self.args['end_time'])
         results = []
         for i in result:
             row = {'key': str(i.id), 'username': str(i.user), 'time': str(i.time), 'instance': str(i.instance),
-                   'sql': str(i.sql)}
+                   'action': str(i.action), 'key': str(i.key)}
             results.append(row)
         return generate_response(results)
