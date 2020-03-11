@@ -44,6 +44,6 @@ class Audit_redis(Resource):
         results = []
         for i in result:
             row = {'key': str(i.id), 'username': str(i.user), 'time': str(i.time), 'instance': str(i.instance),
-                   'action': str(i.action), 'key': str(i.key)}
+                   'action': str(i.action), 'keys': str(i.key)}
             results.append(row)
         return generate_response(results)
