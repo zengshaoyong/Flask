@@ -6,6 +6,7 @@ from app import limiter
 
 from app.common.abort import generate_response
 from app.models.db import record_sql
+from app.common.auth import query_user, query_ldap_user
 
 
 def record(username, st_time, end_time):
@@ -38,12 +39,19 @@ class Audit(Resource):
         self.parser.add_argument('st_time', type=str, required=True)
         self.parser.add_argument('end_time', type=str, required=True)
         self.args = self.parser.parse_args()
+        self.auth = 0
+        if current_user.type == 'ldap':
+            self.auth = query_ldap_user(current_user.id).currentAuthority
+        if current_user.type == 'account':
+            self.auth = query_user(current_user.id).currentAuthority
 
     def get(self):
         if self.args['username'] == 'current_user':
             result = record_sql.query.filter(record_sql.user == current_user.id).order_by(record_sql.id.desc()).limit(
                 10).all()
         else:
+            if int(self.auth) < 10:
+                return generate_response(status=400, data='用户权限不足')
             result = record(self.args['username'], self.args['st_time'], self.args['end_time'])
         results = []
         for i in result:
