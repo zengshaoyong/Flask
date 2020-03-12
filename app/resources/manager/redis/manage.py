@@ -7,7 +7,7 @@ from app import db
 from app.models.db import redis_info
 
 
-class Manager_mysql(Resource):
+class Manager_redis(Resource):
     decorators = [limiter.limit(limit_value="2 per second", key_func=lambda: current_user.id,
                                 error_message=generate_response(data='访问太频繁', status='429')), login_required]
 

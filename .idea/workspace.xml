@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a48c937e-f66f-41ba-9de2-480a2352ea53" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/resources/manager/redis/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/resources/manager/redis/manage.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
