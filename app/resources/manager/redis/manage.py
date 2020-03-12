@@ -29,3 +29,27 @@ class Manager_mysql(Resource):
     def get(self):
         if int(self.auth) < 10:
             return generate_response(status=400, data='用户权限不足')
+        if self.args['type'] == 'query':
+            results = []
+            result = redis_info.query.all()
+            for i in result:
+                row = {'name': str(i.name), 'ip': str(i.ip), 'port': str(i.port), 'password': str(i.password)}
+                results.append(row)
+            return generate_response(results)
+        if self.args['type'] == 'add':
+            redis = redis_info(ip=self.args['ip'], port=self.args['port'],
+                               name=self.args['name'],
+                               password=self.args['password'])
+            db.session.add(redis)
+            db.session.commit()
+        if self.args['type'] == 'del':
+            redis = redis_info.query.filter(redis_info.instance == self.args['name']).first()
+            db.session.delete(redis)
+            db.session.commit()
+        if self.args['type'] == 'modify':
+            redis = redis_info.query.filter(redis_info.instance == self.args['name']).first()
+            redis.ip = self.args['ip']
+            redis.port = self.args['port']
+            redis.name = self.args['name']
+            redis.password = self.args['password']
+            db.session.commit()
