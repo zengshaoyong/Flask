@@ -14,12 +14,12 @@ class Manager_redis(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('type', type=str, required=True)
-        self.parser.add_argument('ip', type=str)
-        self.parser.add_argument('port', type=str)
+        self.parser.add_argument('ip', type=str, required=True)
+        self.parser.add_argument('port', type=str, required=True)
         self.parser.add_argument('name', type=str, required=True)
-        self.parser.add_argument('password', type=str)
+        self.parser.add_argument('password', type=str, required=True)
         self.args = self.parser.parse_args()
-        # 判断用户是否有redis权限
+        # 判断用户是否有权限
         self.auth = 0
         if current_user.type == 'ldap':
             self.auth = query_ldap_user(current_user.id).currentAuthority
@@ -33,7 +33,8 @@ class Manager_redis(Resource):
             results = []
             result = redis_info.query.all()
             for i in result:
-                row = {'name': str(i.name), 'ip': str(i.ip), 'port': str(i.port), 'password': str(i.password)}
+                row = {'key': str(i.id), 'name': str(i.name), 'ip': str(i.ip), 'port': str(i.port),
+                       'password': str(i.password)}
                 results.append(row)
             return generate_response(results)
         if self.args['type'] == 'add':

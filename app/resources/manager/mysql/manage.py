@@ -14,15 +14,15 @@ class Manager_mysql(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('type', type=str, required=True)
-        self.parser.add_argument('ip', type=str)
-        self.parser.add_argument('port', type=str)
-        self.parser.add_argument('read_user', type=str)
-        self.parser.add_argument('read_password', type=str)
-        self.parser.add_argument('execute_user', type=str)
-        self.parser.add_argument('execute_password', type=str)
+        self.parser.add_argument('ip', type=str, required=True)
+        self.parser.add_argument('port', type=str, required=True)
+        self.parser.add_argument('read_user', type=str, required=True)
+        self.parser.add_argument('read_password', type=str, required=True)
+        self.parser.add_argument('execute_user', type=str, required=True)
+        self.parser.add_argument('execute_password', type=str, required=True)
         self.parser.add_argument('instance', type=str, required=True)
         self.args = self.parser.parse_args()
-        # 判断用户是否有redis权限
+        # 判断用户是否有权限
         self.auth = 0
         if current_user.type == 'ldap':
             self.auth = query_ldap_user(current_user.id).currentAuthority
@@ -36,7 +36,8 @@ class Manager_mysql(Resource):
             results = []
             result = database_info.query.all()
             for i in result:
-                row = {'instance': str(i.instance), 'ip': str(i.ip), 'port': str(i.port), 'read_user': str(i.read_user),
+                row = {'key': str(i.id), 'instance': str(i.instance), 'ip': str(i.ip), 'port': str(i.port),
+                       'read_user': str(i.read_user),
                        'read_password': str(i.read_password), 'execute_user': str(i.execute_user),
                        'execute_password': str(i.execute_password)}
                 results.append(row)
@@ -56,7 +57,7 @@ class Manager_mysql(Resource):
         if self.args['type'] == 'modify':
             database = database_info.query.filter(database_info.instance == self.args['instance']).first()
             database.ip = self.args['ip']
-            database.port = port = self.args['port']
+            database.port = self.args['port']
             database.read_user = self.args['read_user']
             database.read_password = self.args['read_password']
             database.execute_user = self.args['execute_user']
