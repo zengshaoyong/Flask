@@ -43,10 +43,12 @@ class Manager_redis(Resource):
                                password=self.args['password'])
             db.session.add(redis)
             db.session.commit()
+            return generate_response(status=201)
         if self.args['type'] == 'del':
             redis = redis_info.query.filter(redis_info.instance == self.args['name']).first()
             db.session.delete(redis)
             db.session.commit()
+            return generate_response(status=201)
         if self.args['type'] == 'modify':
             redis = redis_info.query.filter(redis_info.instance == self.args['name']).first()
             redis.ip = self.args['ip']
@@ -54,3 +56,4 @@ class Manager_redis(Resource):
             redis.name = self.args['name']
             redis.password = self.args['password']
             db.session.commit()
+            return generate_response(status=201)

@@ -50,10 +50,12 @@ class Manager_mysql(Resource):
                                      execute_password=self.args['execute_password'])
             db.session.add(database)
             db.session.commit()
+            return generate_response(status=201)
         if self.args['type'] == 'del':
             database = database_info.query.filter(database_info.instance == self.args['instance']).first()
             db.session.delete(database)
             db.session.commit()
+            return generate_response(status=201)
         if self.args['type'] == 'modify':
             database = database_info.query.filter(database_info.instance == self.args['instance']).first()
             database.ip = self.args['ip']
@@ -63,3 +65,4 @@ class Manager_mysql(Resource):
             database.execute_user = self.args['execute_user']
             database.execute_password = self.args['execute_password']
             db.session.commit()
+            return generate_response(status=201)
