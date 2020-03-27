@@ -30,7 +30,7 @@ class Manager_mysql(Resource):
             self.auth = query_user(current_user.id).currentAuthority
 
     def get(self):
-        if int(self.auth) < 10:
+        if int(self.auth) < 100:
             return generate_response(status=400, data='用户权限不足')
         if self.args['type'] == 'query':
             results = []
