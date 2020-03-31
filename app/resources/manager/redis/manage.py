@@ -45,12 +45,12 @@ class Manager_redis(Resource):
             db.session.commit()
             return generate_response(status=201)
         if self.args['type'] == 'del':
-            redis = redis_info.query.filter(redis_info.instance == self.args['name']).first()
+            redis = redis_info.query.filter(redis_info.name == self.args['name']).first()
             db.session.delete(redis)
             db.session.commit()
             return generate_response(status=201)
         if self.args['type'] == 'modify':
-            redis = redis_info.query.filter(redis_info.instance == self.args['name']).first()
+            redis = redis_info.query.filter(redis_info.name == self.args['name']).first()
             redis.ip = self.args['ip']
             redis.port = self.args['port']
             redis.name = self.args['name']
