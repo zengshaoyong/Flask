@@ -43,14 +43,18 @@ class Manager_mysql(Resource):
                 results.append(row)
             return generate_response(results)
         if self.args['type'] == 'add':
-            database = database_info(instance=self.args['instance'], ip=self.args['ip'], port=self.args['port'],
-                                     read_user=self.args['read_user'],
-                                     read_password=self.args['read_password'],
-                                     execute_user=self.args['execute_user'],
-                                     execute_password=self.args['execute_password'])
-            db.session.add(database)
-            db.session.commit()
-            return generate_response(status=201)
+            if self.args['instance'] != '' and self.args['ip'] != '' and self.args['port'] != '' and self.args[
+                'read_user'] != '' and self.args['read_password'] != '' and self.args['execute_user'] != '' and \
+                    self.args['execute_password'] != '':
+                database = database_info(instance=self.args['instance'], ip=self.args['ip'], port=self.args['port'],
+                                         read_user=self.args['read_user'],
+                                         read_password=self.args['read_password'],
+                                         execute_user=self.args['execute_user'],
+                                         execute_password=self.args['execute_password'])
+                db.session.add(database)
+                db.session.commit()
+                return generate_response(status=201)
+            return
         if self.args['type'] == 'del':
             database = database_info.query.filter(database_info.instance == self.args['instance']).first()
             db.session.delete(database)
