@@ -38,8 +38,7 @@ class Manager_mysql(Resource):
             for i in result:
                 row = {'key': str(i.id), 'instance': str(i.instance), 'ip': str(i.ip), 'port': str(i.port),
                        'read_user': str(i.read_user),
-                       'read_password': str(i.read_password), 'execute_user': str(i.execute_user),
-                       'execute_password': str(i.execute_password)}
+                       'execute_user': str(i.execute_user)}
                 results.append(row)
             return generate_response(results)
         if self.args['type'] == 'add':
@@ -65,8 +64,10 @@ class Manager_mysql(Resource):
             database.ip = self.args['ip']
             database.port = self.args['port']
             database.read_user = self.args['read_user']
-            database.read_password = self.args['read_password']
+            if self.args['read_password'].strip() != '':
+                database.read_password = self.args['read_password']
             database.execute_user = self.args['execute_user']
-            database.execute_password = self.args['execute_password']
+            if self.args['execute_password'].strip() != '':
+                database.execute_password = self.args['execute_password']
             db.session.commit()
             return generate_response(status=201)
