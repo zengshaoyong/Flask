@@ -24,6 +24,10 @@ class Mysql(Resource):
         self.parser.add_argument('instance', type=str, required=True)
         self.args = self.parser.parse_args()
         # 判断用户是否有数据库权限
+        databases = []
+        database = database_info.query.all()
+        for i in database:
+            databases.append(i.instance)
         if current_user.type == 'account':
             self.execute_instances = query_user(current_user.id).execute_instances
             self.read_instances = query_user(current_user.id).read_instances
@@ -33,13 +37,13 @@ class Mysql(Resource):
         # 判断用户数据库（读/写）权限
         self.instance = None
         if self.read_instances:
-            if self.args['instance'] in self.read_instances.split(','):
+            if self.args['instance'] in [val for val in databases if val in self.read_instances.split(',')]:
                 self.instance = database_info.query.filter(database_info.instance == self.args['instance']).first()
                 self.db_host = self.instance.ip
                 self.db_user = self.instance.read_user
                 self.db_pass = self.instance.read_password
         if self.execute_instances:
-            if self.args['instance'] in self.execute_instances.split(','):
+            if self.args['instance'] in [val for val in databases if val in self.execute_instances.split(',')]:
                 self.instance = database_info.query.filter(database_info.instance == self.args['instance']).first()
                 self.db_host = self.instance.ip
                 self.db_user = self.instance.execute_user
