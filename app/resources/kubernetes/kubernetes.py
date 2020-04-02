@@ -34,8 +34,15 @@ class Kubernetes(Resource):
         self.parser.add_argument('image', type=str, location='args')
         self.parser.add_argument('yaml', type=str, location='args')
         self.args = self.parser.parse_args()
+        self.auth = 0
+        if current_user.type == 'ldap':
+            self.auth = query_ldap_user(current_user.id).currentAuthority
+        if current_user.type == 'account':
+            self.auth = query_user(current_user.id).currentAuthority
 
     def get(self):
+        if int(self.auth) < 10:
+            return generate_response(status=400, data='用户权限不足')
         core = client.CoreV1Api()
         apps = client.AppsV1Api()
         extension = client.NetworkingV1beta1Api()
