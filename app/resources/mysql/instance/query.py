@@ -19,9 +19,15 @@ class Instance(Resource):
     def get(self):
         execute_instances = []
         read_instances = []
+        databases = []
+        result = database_info.query.all()
+        for i in result:
+            databases.append(i.instance)
+        # print(databases)
         if self.execute_instances:
             execute_instances = self.execute_instances.split(',')
         if self.read_instances:
             read_instances = self.read_instances.split(',')
         instances = list(set(execute_instances).union(set(read_instances)))
-        return generate_response(instances)
+        final = [val for val in databases if val in instances]
+        return generate_response(final)
