@@ -24,19 +24,23 @@ class Redis(Resource):
         if current_user.type == 'ldap':
             self.redis = query_ldap_user(current_user.id).redis
             # print(self.redis)
+        self.redis_arr = []
+        redis_all = redis_info.query.all()
+        for i in redis_all:
+            self.redis_arr.append(i.name)
 
     def get(self):
         if self.redis == '' or self.redis is None:
             return generate_response(status=400, data='用户权限不足')
         if self.args['type'] == 'get_instance':
-            return generate_response(data=self.redis.split(','))
+            return generate_response(data=[val for val in self.redis_arr if val in self.redis.split(',')])
         if self.args['redis'].strip() == '' or self.args['redis'] is None:
             return generate_response(status=400, data='请先选择redis实例')
         if self.args['key'].strip() == '' or self.args['key'] is None:
             return generate_response(status=400, data='请输入key')
         if self.args['type'].strip() == '' or self.args['type'] is None:
             return generate_response(status=400, data='请输入type')
-        if self.args['redis'] in self.redis.split(','):
+        if self.args['redis'] in [val for val in self.redis_arr if val in self.redis.split(',')]:
             instance = redis_info.query.filter(redis_info.name == self.args['redis']).first()
             redis_host = instance.ip
             redis_port = instance.port
