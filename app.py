@@ -16,9 +16,11 @@ from app.resources.redis.execute import Redis
 from app.resources.manager.mysql.manage import Manager_mysql
 from app.resources.manager.redis.manage import Manager_redis
 from app.resources.manager.user.manager import Manager_user
+from app.resources.mysql.fields.query import Field
 
 api.add_resource(Mysql, '/mysql')
 api.add_resource(Instance, '/instance')
+api.add_resource(Field, '/fields')
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(Kubernetes, '/k8s')
@@ -30,6 +32,7 @@ api.add_resource(Redis, '/redis')
 api.add_resource(Manager_mysql, '/manage_mysql')
 api.add_resource(Manager_redis, '/manage_redis')
 api.add_resource(Manager_user, '/manage_user')
+
 
 if __name__ == '__main__':
     server = WSGIServer(('0.0.0.0', 5000), app)
