@@ -14,10 +14,10 @@ def record(username, st_time, end_time):
     #                                  record_sql.time <= '2020-02-24 11:09:44').all()
     if username != '':
         result = record_sql.query.filter(record_sql.user == username, record_sql.time >= local_time(st_time),
-                                         record_sql.time <= local_time(end_time)).all()
+                                         record_sql.time <= local_time(end_time)).order_by(record_sql.id.desc()).all()
     if username == '':
         result = record_sql.query.filter(record_sql.time >= local_time(st_time),
-                                         record_sql.time <= local_time(end_time)).all()
+                                         record_sql.time <= local_time(end_time)).order_by(record_sql.id.desc()).all()
     return result
 
 
